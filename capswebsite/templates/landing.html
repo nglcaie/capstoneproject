@@ -1,0 +1,213 @@
+{% load static %}
+<html>
+<head>
+    <title>Landing Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@1,100&family=Cedarville+Cursive&family=Cormorant+Garamond:wght@300&family=Inter:wght@100;200;400;500;700&family=Nunito:wght@400;500;600;800&display=swap');
+
+    body {
+
+        margin: 0px;
+        position: relative;
+        min-height: 100vh;
+        max-width: 400px;
+        line-height: 150%;
+        overflow:hidden;
+
+        background: linear-gradient(136.95deg, #FCFBFE 46.14%, #D8F2F2 88.42%);
+    }
+
+    .section {
+        text-align: center;
+    }
+
+    .container {
+        display: table;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* LEFT HALF */
+    .left-half {
+        position: absolute;
+        margin-top: -60px;
+        left: 0px;
+        width: 50%;
+    }
+
+    .text-em {
+        position: absolute;
+        width: 477px;
+        height: 9.375em;
+        left: 109px;
+        top: 226px;
+
+        font-family: 'Inter', sans-serif;
+        font-size: 4em;
+        height: 3.87em;
+        color: #404040;
+
+        font-style: normal;
+        font-weight: 700;
+    }
+
+    hr.horizontal-gold {
+        position: absolute;
+        width: 86px;
+        left: 109px;
+        top: 213px;
+    }
+
+    .logo {
+        position: absolute;
+        width: 7.375em;
+        height: 7.375em;
+        left: 99px;
+        top: 109px;
+
+    }
+
+    .lorem-ipsum {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 19px;
+        margin-top: 380px;
+        margin-left: 100px;
+
+        color: #404040;
+    }
+
+    .button {
+        position: absolute;
+        
+        height: 37.33px;
+        left: 99px;
+        top: 504px;
+
+    }
+
+    .btn-lg {
+        width: 161.72px;
+        height: 37.33px;
+        color: white;
+
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 18px;
+
+        background: #42CBCE;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-lg:hover {
+        background-color: #92C4C6;
+    }
+
+    .sign-up{
+        font-family: 'Inter';
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 15px;
+    }
+    a {
+        text-decoration: none;
+        color: #42CBCE;
+    }
+    a:hover {
+    text-decoration: underline;
+    }
+
+
+
+    /****** RIGHT HALF */
+    .right-half {
+        position: absolute;
+        right: -110px;
+        width: 50%;
+        margin-top: -550px;
+    }
+
+    .brain {
+        position: absolute;
+        left: 204.38%;
+        right: 9.45%;
+        top: 77.92%;
+        bottom: 17.78%;
+    }
+
+    .blue-pill {
+        position: absolute;
+        width: 172px;
+        height: 174px;
+        left: 770px;
+        top: 124px;
+    }
+
+    .violet-cell {
+        position: absolute;
+        width: 135px;
+        height: 136px;
+        left: 346px;
+        top: 500px;
+
+    }
+
+    .yellow-cell {
+        position: relative;
+        width: 179px;
+        height: 179px;
+        left: 800px;
+        top: 457px;
+
+
+    }
+</style>
+<body>
+    <section class="container">
+        <!---------------- LEFT HALF ---------------->
+        <div class="left-half">
+            <img src="{% static 'image/landing-plm-logo.png' %}" class="logo"><br>
+            <hr class="horizontal-gold" width="10%" color="#D5A106" size="5em">
+            <p class="text-em"> Mental Health <br><br><br> Survey</p> <br>
+        </div>
+
+        <div class="lorem">
+            <p class="lorem-ipsum"> Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem <br>
+                Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum </p>
+        </div>
+
+        <div class="button">
+            <a href="{% url 'start_survey' %}">
+                <button class="btn btn-primary btn-lg">BEGIN</button>
+            </a>
+                    
+        </div>
+
+        
+
+
+        <!---------------- RIGHT HALF ---------------->
+        <div class="right-half">
+            <img src="{% static 'image/brain.png' %}" class="brain"><br>
+            <img src="{% static 'image/pill-blue.png' %}" class="blue-pill"><br>
+            <img src="{% static 'image/cell-yellow.png' %}" class="yellow-cell"><br>
+            <img src="{% static 'image/cell-violet.png' %}" class="violet-cell"><br>
+        </div>
+
+
+
+    </section>
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+{% load static %}
+
+{% include 'student/student_navbar.html' %}
+
+<style>
+    body {
+        margin: 0px;
+        min-height: 100vh;
+        background: linear-gradient(153.3deg, #FCFBFE 61.32%, #D8F2F2 106.14%);
+        overflow-y: hidden;
+    }
+
+    .date-time {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1em;
+        color: #404040;
+        text-align: right;
+        margin-right: 2em;
+    }
+
+    .title {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 2em;
+        text-align: center;
+        margin-bottom: 1em;
+
+        color: #404040;
+    }
+
+    .description {
+        text-align: center;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1em;
+    }
+
+    .btn-lg {
+        width: 161.72px;
+        height: 37.33px;
+        color: white;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 18px;
+
+        background: #42CBCE;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        margin: auto;
+        display: block;
+    }
+
+    .btn-lg:hover {
+        background-color: #92C4C6;
+    }
+
+    a{
+        text-decoration: none;
+        color: #42CBCE;
+    }
+
+    .tree-saly {
+        position: absolute;
+        width: 474px;
+        height: 474px;
+        left: 885px;
+        top: 222px;
+    }
+</style>
+
+{% block content %}
+
+<p class="date-time">Today is {date} {time}</p>
+
+<br>
+
+<p class='title'>Mental Health Survey</p>
+<hr width="20%" color="#D5A106" size="9em">
+
+<br><br>
+
+<p class="description">
+    Short background about the survey<br>
+    Lorem ipsum Lorem ipsum Lorem ipsum<br>
+    Lorem ipsum Lorem ipsum Lorem ipsum<br>
+    Lorem ipsum Lorem ipsum Lorem ipsum<br>
+    Lorem ipsum Lorem ipsum Lorem ipsum<br>
+</p>
+
+<br><br><br>
+
+
+<a href="{% url 'survey_question' %}">
+    <button class="btn btn-primary btn-lg">Start Survey</button>
+</a>
+
+
+<img src="{% static 'image/tree-saly.png' %}" class="tree-saly">
+
+{% endblock %}

@@ -1,0 +1,258 @@
+{% load static %}
+
+{% include 'student/student_navbar.html' %}
+
+<style>
+    body {
+        margin: 0px;
+        min-height: 100vh;
+        background: linear-gradient(155.57deg, #FCFBFE 36.97%, #D8F2F2 83.32%);
+        background-repeat: no-repeat;
+    }
+    
+    .title {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 2em;
+        text-align: center;
+        margin-top: 2em;
+
+        color: #404040;
+    }
+
+    .qna {
+        display: block;
+        min-width: 100px;
+        max-width: 55%;
+        height: auto;
+        padding: 40px;
+        margin: 80px auto;
+
+        background: #FFFFFF;
+        box-shadow: 0px 14px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 30px;
+
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+    }
+
+    .qna span {
+        font-family:'Inter';  
+        font-size: 20px;
+        font-weight: 700;
+        /* display: contents; */
+    }
+
+    textarea {  
+        font-family:'Inter';  
+        font-size: 14px;
+        resize: none;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 700px;
+        height: 70px;
+    }
+
+    .submit-btn {
+        width: 200px;
+        height: 45px;
+        color: white;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 18px;
+
+        background: #42CBCE;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        margin: auto;
+        display: block;
+    }
+
+    .submit-btn:hover {
+        background-color: #92C4C6;
+    }
+
+    a{
+        text-decoration: none;
+        color: #42CBCE;
+    }
+</style>
+
+{% block content%}
+
+<div class="title">Survey Questionnaire</div>
+    <form method="post" id="personForm" data-cities-url="{% url 'ajax_load_slot' %}">
+        {% csrf_token %}
+
+
+        <label>Email</label>
+        {{register.email}}  <br>
+        <label class="error">
+            {{register.email.errors}}
+        </label>
+        <label>Student Number</label>
+        {{register.numberID}} <br>
+        <label class="error">
+            {{register.numberID.errors}} 
+        </label>
+        <label>First Name</label>
+        {{register.firstName}} <br>
+        <label class="error">
+            {{register.firstName.errors}}
+        </label>
+        <label>Last Name</label>
+        {{register.lastName}} <br>
+        <label class="error">
+            {{register.lastName.errors}}
+        </label>
+        <label>College</label>
+        {{register.college}} <br>
+        <label class="error">
+            {{register.college.errors}}
+        </label>
+
+        <label>Program</label>
+        {{register.course}} <br>
+        <label class="error">
+            {{register.course.errors}}
+        </label>
+
+        <label>Year</label>
+        {{register.year}} <br>
+        <label class="error">
+            {{register.year.errors}}
+        </label>
+        <label>Block</label>
+        {{register.block}} <br>
+        <label class="error">
+            {{register.block.errors}}
+        </label>
+        <!-- Question 1 -->
+        <div class="qna"> 
+            {{register.student}}  <!-- do not remove -->
+            <span>Question #1</span>
+            <br><br>
+            1. How does your environment affect your studying?
+            <br><br><br><br>
+            <label for="answer">Answer:</label>
+            <br><br>
+            {{register.question1}} <br>
+            <label class="error">
+                {{register.question1.errors}}<br>
+            </label>
+        </div>
+        
+        <!-- Question 2 -->
+        <div class="qna"> 
+            
+            <span>Question #2</span>
+            <br><br>
+            2. How do you feel about the workload that is given to you during online classes?
+            <br><br><br><br>
+            
+            <label for="answer">Answer:</label>
+            <br><br>
+            {{register.question2}} <br>
+            <label class="error">
+                {{register.question2.errors}}<br>
+            </label>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="qna"> 
+            
+            <span>Question #3</span>
+            <br><br>
+            3. What can you say about your physical health in relation to online learning? (Sleep quality, physical activity, feelings of mental or physical fatigue, etc.)
+            <br><br><br><br>
+            
+            <label for="answer">Answer:</label>
+            <br><br>
+            {{register.question3}} <br>
+            <label class="error">
+                {{register.question3.errors}}<br>
+            </label>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="qna"> 
+            
+            <span>Question #4</span>
+            <br><br>
+            4. Can you say that your motivation decreased in an online set-up? If yes, how?
+            <br><br><br><br>
+            
+            <label for="answer">Answer:</label>
+            <br><br>
+            {{register.question4}} <br>
+            <label class="error">
+                {{register.question4.errors}}<br>
+            </label>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="qna"> 
+            
+            <span>Question #5</span>
+            <br><br>
+            5. How do you think your socioeconomic status affects your mental health during online class?
+            <br><br><br><br>
+            <br><br>
+            <label for="answer">Answer:</label>
+            {{register.question5}} <br>
+            <label class="error">
+                {{register.question5.errors}}<br>
+            </label>
+        </div>
+
+        <input type="submit" value="Submit" class="submit-btn">
+    </form>
+</div>
+
+<br><br><br><br>
+
+
+
+
+
+
+<a href="{% url 'thankyou' %}">submit</a>
+{% endblock %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#college").change(function () {
+        const url = $("#personForm").attr("data-cities-url");  // get the url of the `load_cities` view
+        const collegeId = $(this).val();  // get the selected country ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'college_Id':collegeId     // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#course").html(data);  // replace the contents of the city input with the data that came from the server
+                /*
+ 
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (city) {
+                    html_data += `<option value="${city.id}">${city.name}</option>`
+                });
+                console.log(html_data);
+                $("#id_city").html(html_data);
+ 
+                */
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

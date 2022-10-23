@@ -1,0 +1,94 @@
+{% load static %}
+
+{% include 'student/student_navbar.html' %}
+
+<html>
+
+<head>
+    <title>Landing Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@1,100&family=Cedarville+Cursive&family=Cormorant+Garamond:wght@300&family=Inter:wght@100;200;400;500;700&family=Nunito:wght@400;500;600;800&display=swap');
+
+    body {
+        margin: 0px;
+        min-height: 100vh;
+        background: linear-gradient(153.3deg, #FCFBFE 61.32%, #D8F2F2 106.14%);
+        overflow-y: hidden;
+    }
+
+    .successful {
+        position: absolute;
+        width: 356px;
+        height: 78px;
+        left: 465px;
+        top: 314px;
+
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 32px;
+        line-height: 39px;
+        text-align: center;
+
+        color: #404040;
+    }
+
+    hr.horizontal-gold {
+        position: absolute;
+        left: 500px;
+        top: 472px;
+    }
+
+    .thank-you{
+        position: absolute;
+        width: 78px;
+        height: 18px;
+        left: 591px;
+        top: 504px;
+
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 18px;
+        text-align: center;
+
+        color: #404040;
+    }
+
+    .saly{
+        position: absolute;
+        width: 474px;
+        height: 474px;
+        left: 855px;
+        top: 235px;
+    }
+
+
+</style>
+
+{% block content %}
+
+<body>
+
+    <div class="banner">
+        <p class="successful"> You have successfully <br>
+            answered the survey!</p>
+        
+            <hr class="horizontal-gold" width="17%" color="#D5A106" size="9em">
+
+            <p class="thank-you"> Thank you </p>
+    </div>
+
+    <div class="saly">
+        <img src="{% static 'image/peace-saly.png' %}" class="brain"><br>
+    </div>
+
+</body>
+
+</html>
+
+{% endblock %}
