@@ -82,7 +82,13 @@
             <br><br><br>
             
             <div class="visualization">
-                {% for topic in topics %}
+                Topic for Train Model <br><br>
+                {% for topic in x1 %}
+                {{topic}}<br><br><br>
+                {%endfor%}
+                <br><br>
+                Topic for Test Model <br>
+                {% for topic in x2 %}
                 {{topic}}<br><br><br>
                 {%endfor%}
                 
