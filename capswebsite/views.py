@@ -134,7 +134,7 @@ def evaluation(request):
     dicts = corpora.Dictionary.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'model\lda_model1.id2word'))
     pprint(lda.print_topics())
     pprint(dicts)
-    df2 = pd.read_csv('D:/Pia/Downloads/capstone/testSet.csv')
+    df2 = pd.read_csv('C:/Users/Nella/Downloads/testSet.csv')
     df2['q1']=df2['question1'].astype(str) #convert type to string
     df2['q1']=df2['q1'].apply(lambda x: x.lower()) #all lowercase
 
