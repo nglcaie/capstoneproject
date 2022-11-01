@@ -23,7 +23,7 @@ body{
 
 .nav-bar-2{
     background: #92C4C6;
-    height: 3.5em;
+    height: 1.5em;
     display: flex;
     align-items: center;
 }
@@ -39,10 +39,10 @@ body{
     
 }
 
-.nav-bar-2-right{
+/* .nav-bar-2-right{
     margin-left: auto; 
     margin-right: 0;
-}
+} */
 
 ul{
     list-style: none;
