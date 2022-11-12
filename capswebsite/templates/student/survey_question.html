@@ -184,6 +184,47 @@
         color: #8F8F8F;
         color: #404040;
     }
+
+    #count-words{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+
+        color: #8F8F8F;;
+    }
+    #count-words2{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+
+        color: #8F8F8F;;
+    }
+    #count-words3{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+
+        color: #8F8F8F;;
+    }
+    #count-words4{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+
+        color: #8F8F8F;;
+    }
+    #count-words5{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+
+        color: #8F8F8F;;
+    }
 </style>
 
 {% block content%}
@@ -265,6 +306,7 @@
         <label for="answer">Answer:</label>
         <br><br>
         {{register.question1}} <br>
+        <span id="count-words"></span>
         <label class="error">
             {{register.question1.errors}}
         </label>
@@ -281,6 +323,7 @@
         <label for="answer">Answer:</label>
         <br><br>
         {{register.question2}} <br>
+        <span id="count-words2"></span>
         <label class="error">
             {{register.question2.errors}}
         </label>
@@ -298,6 +341,7 @@
         <label for="answer">Answer:</label>
         <br><br>
         {{register.question3}} <br>
+        <span id="count-words3"></span>
         <label class="error">
             {{register.question3.errors}}
         </label>
@@ -314,6 +358,7 @@
         <label for="answer">Answer:</label>
         <br><br>
         {{register.question4}} <br>
+        <span id="count-words4"></span>
         <label class="error">
             {{register.question4.errors}}
         </label>
@@ -329,6 +374,7 @@
         <label for="answer">Answer:</label>
         <br><br>
         {{register.question5}}<br>
+        <span id="count-words5"></span>
         <label class="error">
             {{register.question5.errors}}
         </label>
@@ -375,6 +421,37 @@
         });
 
     });
+
+    function countWords(self) {
+        var spaces = self.value.match(/\S+/g);
+        var words = spaces ? spaces.length : 0;
+
+        document.getElementById("count-words").innerHTML = words + " words";
+    }
+    function countWords2(self) {
+        var spaces = self.value.match(/\S+/g);
+        var words = spaces ? spaces.length : 0;
+
+        document.getElementById("count-words2").innerHTML = words + " words";
+    }
+    function countWords3(self) {
+        var spaces = self.value.match(/\S+/g);
+        var words = spaces ? spaces.length : 0;
+
+        document.getElementById("count-words3").innerHTML = words + " words";
+    }
+    function countWords4(self) {
+        var spaces = self.value.match(/\S+/g);
+        var words = spaces ? spaces.length : 0;
+
+        document.getElementById("count-words4").innerHTML = words + " words";
+    }
+    function countWords5(self) {
+        var spaces = self.value.match(/\S+/g);
+        var words = spaces ? spaces.length : 0;
+
+        document.getElementById("count-words5").innerHTML = words + " words";
+    }
 </script>
 </body>
 
