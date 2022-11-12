@@ -20,12 +20,7 @@
     }
 
     .successful {
-        position: absolute;
-        width: 356px;
-        height: 78px;
-        left: 465px;
-        top: 314px;
-
+        margin-top: 13%;
         font-family: 'Inter';
         font-style: normal;
         font-weight: 700;
@@ -37,18 +32,11 @@
     }
 
     hr.horizontal-gold {
-        position: absolute;
         left: 500px;
         top: 472px;
     }
 
     .thank-you{
-        position: absolute;
-        width: 78px;
-        height: 18px;
-        left: 591px;
-        top: 504px;
-
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
@@ -57,6 +45,33 @@
         text-align: center;
 
         color: #404040;
+    }
+
+    .button {
+        height: 37.33px;
+        text-align: center;
+
+    }
+
+    .btn-lg {
+        width: 161.72px;
+        height: 37.33px;
+        color: white;
+
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 18px;
+
+        background: #42CBCE;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-lg:hover {
+        background-color: #92C4C6;
     }
 
     .saly{
@@ -80,12 +95,21 @@
         
             <hr class="horizontal-gold" width="17%" color="#D5A106" size="9em">
 
-            <p class="thank-you"> Thank you </p>
+            <p class="thank-you"> Thank you for answering.</p>
+    </div>
+
+    <br><br>
+
+    <div class="button">
+        <a href="{% url 'index' %}">
+            <button class="btn btn-primary btn-lg">FINISH</button>
+        </a>
     </div>
 
     <div class="saly">
         <img src="{% static 'image/peace-saly.png' %}" class="brain"><br>
     </div>
+
 
 </body>
 

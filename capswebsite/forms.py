@@ -59,9 +59,9 @@ class AnswerForm(forms.ModelForm):
         self.fields["email"].widget.attrs.update(
             {'required': True, 'name': 'email', 'id': 'email', 'type': 'text', 'class': 'form-control', 'placeholder': 'Email'})
         self.fields["firstName"].widget.attrs.update(
-            {'required': True, 'name': 'firstName', 'id': 'firstName', 'type': 'text', 'class': 'form-control', 'placeholder': 'First Name'})
+            {'required': False, 'name': 'firstName', 'id': 'firstName', 'type': 'text', 'class': 'form-control', 'placeholder': 'First Name'})
         self.fields["lastName"].widget.attrs.update(
-            {'required': True, 'name': 'lastName', 'id': 'firstName', 'type': 'text', 'class': 'form-control', 'placeholder': 'Last Name'})
+            {'required': False, 'name': 'lastName', 'id': 'firstName', 'type': 'text', 'class': 'form-control', 'placeholder': 'Last Name'})
         self.fields["numberID"].widget.attrs.update(
             {'required': True, 'name': 'numberID', 'id': 'numberID', 'class': 'form-control', 'placeholder': 'Student Number'})
         self.fields["college"].widget.attrs.update(
@@ -73,15 +73,15 @@ class AnswerForm(forms.ModelForm):
         self.fields["block"].widget.attrs.update(
             {'required': True, 'name': 'block', 'id': 'block', 'class': 'form-control1blk', 'placeholder': 'Block'})
         self.fields["question1"].widget.attrs.update(
-            {'required': True, 'name': 'question1', 'id': 'question1', 'type': 'text', 'class': 'form-control', 'placeholder': 'Share your experience','required minlength':'20', 'rows':'10', 'cols':'100'})
+            {'required': True, 'name': 'question1', 'id': 'question1', 'type': 'text', 'class': 'textarea', 'placeholder': 'Share your experience','required minlength':'20', 'rows':'10', 'cols':'100'})
         self.fields["question2"].widget.attrs.update(
-            {'required': True, 'name': 'question2', 'id': 'question2', 'type': 'text', 'class': 'form-control', 'placeholder': 'Share your experience','required minlength':'20', 'rows':'10', 'cols':'100'})
+            {'required': True, 'name': 'question2', 'id': 'question2', 'type': 'text', 'class': 'textarea', 'placeholder': 'Share your experience','required minlength':'20', 'rows':'10', 'cols':'100'})
         self.fields["question3"].widget.attrs.update(
-            {'required': True, 'name': 'questio3', 'id': 'question3', 'type': 'text', 'class': 'form-control', 'placeholder': 'Share your experience','required minlength':'20', 'rows':'10', 'cols':'100'})
+            {'required': True, 'name': 'questio3', 'id': 'question3', 'type': 'text', 'class': 'textarea', 'placeholder': 'Share your experience','required minlength':'20', 'rows':'10', 'cols':'100'})
         self.fields["question4"].widget.attrs.update(
-            {'required': True, 'name': 'question4', 'id': 'question4', 'type': 'text', 'class': 'form-control', 'placeholder': 'Share your experience','required minlength':'20', 'rows':'10', 'cols':'100'})
+            {'required': True, 'name': 'question4', 'id': 'question4', 'type': 'text', 'class': 'textarea', 'placeholder': 'Share your experience','required minlength':'20', 'rows':'10', 'cols':'100'})
         self.fields["question5"].widget.attrs.update(
-            {'required': True, 'name': 'question5', 'id': 'question5', 'type': 'text', 'class': 'form-control', 'placeholder': 'Share your experience','required minlength':'20', 'rows':'10', 'cols':'100'})
+            {'required': True, 'name': 'question5', 'id': 'question5', 'type': 'text', 'class': 'textarea', 'placeholder': 'Share your experience','required minlength':'20', 'rows':'10', 'cols':'100'})
         
         if 'college' in self.data:
             try:
