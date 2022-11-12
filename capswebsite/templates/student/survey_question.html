@@ -88,13 +88,25 @@
 
 
 
-    label {
+    .container{
+        width: 800px;
+        border: #42CBCE;
+        border-width: 2px;
+        background-color: pink;
+        margin-left: auto;
+        margin-right: auto;
+    }
+        
+  
+    label{
+        width: 140px;
+        display: inline-block;
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
         font-size: 14px;
         line-height: 24px;
-        
+
         color: #8F8F8F;
     }
 
@@ -129,7 +141,7 @@
 
         box-sizing: border-box;
         margin: 8px 0;
-        margin-left: 80px;
+        margin-left: 60px;
         padding: 0px 10px;
         width: 282.43px;
         height: 28px;
@@ -163,12 +175,6 @@
         color: #8F8F8F;
         color: #404040;
     }
-
-
-    .center-form{
-        text-align: center;
-
-    }
 </style>
 
 {% block content%}
@@ -177,45 +183,56 @@
 <form method="post" id="personForm" data-cities-url="{% url 'ajax_load_slot' %}">
     {% csrf_token %}
 
-    <div class="center-form">
+    <div class="container">
 
         <label>Email</label>
         {{register.email}} <br>
         <label class="error">
             {{register.email.errors}}
         </label>
+        
+       
         <label>Student Number</label>
         {{register.numberID}} <br>
         <label class="error">
             {{register.numberID.errors}}
         </label>
+       
+       
         <label>First Name</label>
         {{register.firstName}} <br>
         <label class="error">
             {{register.firstName.errors}}
         </label>
+        
+        
         <label>Last Name</label>
         {{register.lastName}} <br>
         <label class="error">
             {{register.lastName.errors}}
         </label>
+        
+        
         <label>College</label>
         {{register.college}} <br>
         <label class="error">
             {{register.college.errors}}
         </label>
 
+        
         <label>Program</label>
         {{register.course}} <br>
         <label class="error">
             {{register.course.errors}}
         </label>
 
+        
         <label>Year</label>
         {{register.year}} <br>
         <label class="error">
             {{register.year.errors}}
         </label>
+        
         <label>Block</label>
         {{register.block}} <br>
         <label class="error">
