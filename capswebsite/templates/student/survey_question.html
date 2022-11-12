@@ -9,7 +9,7 @@
         background: linear-gradient(155.57deg, #FCFBFE 36.97%, #D8F2F2 83.32%);
         background-repeat: no-repeat;
     }
-    
+
     .title {
         font-family: 'Inter';
         font-style: normal;
@@ -40,20 +40,20 @@
     }
 
     .qna span {
-        font-family:'Inter';  
+        font-family: 'Inter';
         font-size: 20px;
         font-weight: 700;
         /* display: contents; */
     }
 
-    textarea {  
-        font-family:'Inter';  
+    textarea {
+        font-family: 'Inter';
         font-size: 14px;
         resize: none;
         display: block;
         margin-left: auto;
         margin-right: auto;
-        max-width:95%;
+        max-width: 95%;
         height: 70px;
     }
 
@@ -79,7 +79,7 @@
         background-color: #92C4C6;
     }
 
-    a{
+    a {
         text-decoration: none;
         color: #42CBCE;
     }
@@ -88,17 +88,16 @@
 
 
 
-    label{
+    label {
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
         font-size: 14px;
         line-height: 24px;
         
-        
-
         color: #8F8F8F;
     }
+
     .form-control {
         font-family: 'Inter';
         font-style: normal;
@@ -130,8 +129,8 @@
 
         box-sizing: border-box;
         margin: 8px 0;
-        margin-left: 60px;
-        padding: 0px 20px;
+        margin-left: 80px;
+        padding: 0px 10px;
         width: 282.43px;
         height: 28px;
 
@@ -140,7 +139,9 @@
         border-radius: 5px;
         border: none;
         color: #8F8F8F;
-    } 
+        color: #404040;
+    }
+
     .form-control1blk {
         font-family: 'Inter';
         font-style: normal;
@@ -151,7 +152,7 @@
         box-sizing: border-box;
         margin: 8px 0;
         margin-left: 60px;
-        padding: 0px 25px;
+        padding: 12px 15px;
         width: 282.43px;
         height: 28px;
 
@@ -160,26 +161,33 @@
         border-radius: 5px;
         border: none;
         color: #8F8F8F;
+        color: #404040;
     }
 
+
+    .center-form{
+        text-align: center;
+
+    }
 </style>
 
 {% block content%}
 
-<div class="title">Survey Questionnaire</div>
-    <form method="post" id="personForm" data-cities-url="{% url 'ajax_load_slot' %}">
-        {% csrf_token %}
+<div class="title">Survey Questionnaire</div> <br>
+<form method="post" id="personForm" data-cities-url="{% url 'ajax_load_slot' %}">
+    {% csrf_token %}
 
+    <div class="center-form">
 
         <label>Email</label>
-        {{register.email}}  <br>
+        {{register.email}} <br>
         <label class="error">
             {{register.email.errors}}
         </label>
         <label>Student Number</label>
         {{register.numberID}} <br>
         <label class="error">
-            {{register.numberID.errors}} 
+            {{register.numberID.errors}}
         </label>
         <label>First Name</label>
         {{register.firstName}} <br>
@@ -213,86 +221,94 @@
         <label class="error">
             {{register.block.errors}}
         </label>
-        <!-- Question 1 -->
-        <div class="qna"> 
-            {{register.student}}  <!-- do not remove -->
-            <span>Question #1</span>
-            <br><br>
-            1. How does your environment affect your studying?
-            <br><br><br><br>
-            <label for="answer">Answer:</label>
-            <br><br>
-            {{register.question1}} <br>
-            <label class="error">
-                {{register.question1.errors}}
-            </label>
-        </div>
-        
-        <!-- Question 2 -->
-        <div class="qna"> 
-            
-            <span>Question #2</span>
-            <br><br>
-            2. How do you feel about the workload that is given to you during online classes?
-            <br><br><br><br>
-            
-            <label for="answer">Answer:</label>
-            <br><br>
-            {{register.question2}} <br>
-            <label class="error">
-                {{register.question2.errors}}
-            </label>
-        </div>
 
-        <!-- Question 3 -->
-        <div class="qna"> 
-            
-            <span>Question #3</span>
-            <br><br>
-            3. What can you say about your physical health in relation to online learning? (Sleep quality, physical activity, feelings of mental or physical fatigue, etc.)
-            <br><br><br><br>
-            
-            <label for="answer">Answer:</label>
-            <br><br>
-            {{register.question3}} <br>
-            <label class="error">
-                {{register.question3.errors}}
-            </label>
-        </div>
+    </div>
 
-        <!-- Question 4 -->
-        <div class="qna"> 
-            
-            <span>Question #4</span>
-            <br><br>
-            4. Can you say that your motivation decreased in an online set-up? If yes, how?
-            <br><br><br><br>
-            
-            <label for="answer">Answer:</label>
-            <br><br>
-            {{register.question4}} <br>
-            <label class="error">
-                {{register.question4.errors}}
-            </label>
-        </div>
 
-        <!-- Question 5 -->
-        <div class="qna"> 
-            
-            <span>Question #5</span>
-            <br><br>
-            5. How do you think your socioeconomic status affects your mental health during online class?
-            <br><br><br><br>
-            <label for="answer">Answer:</label>
-            <br><br>
-            {{register.question5}}<br>
-            <label class="error">
-                {{register.question5.errors}}
-            </label>
-        </div>
 
-        <input type="submit" value="Submit" class="submit-btn">
-    </form>
+
+    <!-- Question 1 -->
+    <div class="qna">
+        {{register.student}}
+        <!-- do not remove -->
+        <span>Question #1</span>
+        <br><br>
+        1. How does your environment affect your studying?
+        <br><br><br><br>
+        <label for="answer">Answer:</label>
+        <br><br>
+        {{register.question1}} <br>
+        <label class="error">
+            {{register.question1.errors}}
+        </label>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="qna">
+
+        <span>Question #2</span>
+        <br><br>
+        2. How do you feel about the workload that is given to you during online classes?
+        <br><br><br><br>
+
+        <label for="answer">Answer:</label>
+        <br><br>
+        {{register.question2}} <br>
+        <label class="error">
+            {{register.question2.errors}}
+        </label>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="qna">
+
+        <span>Question #3</span>
+        <br><br>
+        3. What can you say about your physical health in relation to online learning? (Sleep quality, physical
+        activity, feelings of mental or physical fatigue, etc.)
+        <br><br><br><br>
+
+        <label for="answer">Answer:</label>
+        <br><br>
+        {{register.question3}} <br>
+        <label class="error">
+            {{register.question3.errors}}
+        </label>
+    </div>
+
+    <!-- Question 4 -->
+    <div class="qna">
+
+        <span>Question #4</span>
+        <br><br>
+        4. Can you say that your motivation decreased in an online set-up? If yes, how?
+        <br><br><br><br>
+
+        <label for="answer">Answer:</label>
+        <br><br>
+        {{register.question4}} <br>
+        <label class="error">
+            {{register.question4.errors}}
+        </label>
+    </div>
+
+    <!-- Question 5 -->
+    <div class="qna">
+
+        <span>Question #5</span>
+        <br><br>
+        5. How do you think your socioeconomic status affects your mental health during online class?
+        <br><br><br><br>
+        <label for="answer">Answer:</label>
+        <br><br>
+        {{register.question5}}<br>
+        <label class="error">
+            {{register.question5.errors}}
+        </label>
+    </div>
+
+    <input type="submit" value="Submit" class="submit-btn">
+</form>
 </div>
 
 <br><br><br><br>
@@ -314,7 +330,7 @@
         $.ajax({                       // initialize an AJAX request
             url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
             data: {
-                'college_Id':collegeId     // add the country id to the GET parameters
+                'college_Id': collegeId     // add the country id to the GET parameters
             },
             success: function (data) {   // `data` is the return of the `load_cities` view function
                 $("#course").html(data);  // replace the contents of the city input with the data that came from the server
@@ -334,4 +350,5 @@
     });
 </script>
 </body>
+
 </html>
