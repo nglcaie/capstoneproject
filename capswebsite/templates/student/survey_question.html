@@ -230,6 +230,9 @@
 {% block content%}
 
 <div class="title">Survey Questionnaire</div> <br>
+{% for message in messages %}
+{{message}}
+{% endfor %}   
 <form method="post" id="personForm" data-cities-url="{% url 'ajax_load_slot' %}">
     {% csrf_token %}
 
@@ -307,6 +310,7 @@
         <br><br>
         {{register.question1}} <br>
         <span id="count-words"></span>
+        <input id="change" name="change" type="number">
         <label class="error">
             {{register.question1.errors}}
         </label>
@@ -324,6 +328,7 @@
         <br><br>
         {{register.question2}} <br>
         <span id="count-words2"></span>
+        <input id="change2" name="change2" type="number">
         <label class="error">
             {{register.question2.errors}}
         </label>
@@ -342,6 +347,7 @@
         <br><br>
         {{register.question3}} <br>
         <span id="count-words3"></span>
+        <input id="change3" name="change3" type="number">
         <label class="error">
             {{register.question3.errors}}
         </label>
@@ -359,6 +365,7 @@
         <br><br>
         {{register.question4}} <br>
         <span id="count-words4"></span>
+        <input id="change4" name="change4" type="number">
         <label class="error">
             {{register.question4.errors}}
         </label>
@@ -375,6 +382,7 @@
         <br><br>
         {{register.question5}}<br>
         <span id="count-words5"></span>
+        <input id="change5" name="change5" type="number">
         <label class="error">
             {{register.question5.errors}}
         </label>
@@ -425,30 +433,35 @@
     function countWords(self) {
         var spaces = self.value.match(/\S+/g);
         var words = spaces ? spaces.length : 0;
+        $("#change").val(words);
 
         document.getElementById("count-words").innerHTML = words + " words";
     }
     function countWords2(self) {
         var spaces = self.value.match(/\S+/g);
         var words = spaces ? spaces.length : 0;
+        $("#change2").val(words);
 
         document.getElementById("count-words2").innerHTML = words + " words";
     }
     function countWords3(self) {
         var spaces = self.value.match(/\S+/g);
         var words = spaces ? spaces.length : 0;
+        $("#change3").val(words);
 
         document.getElementById("count-words3").innerHTML = words + " words";
     }
     function countWords4(self) {
         var spaces = self.value.match(/\S+/g);
         var words = spaces ? spaces.length : 0;
+        $("#change4").val(words);
 
         document.getElementById("count-words4").innerHTML = words + " words";
     }
     function countWords5(self) {
         var spaces = self.value.match(/\S+/g);
         var words = spaces ? spaces.length : 0;
+        $("#change5").val(words);
 
         document.getElementById("count-words5").innerHTML = words + " words";
     }

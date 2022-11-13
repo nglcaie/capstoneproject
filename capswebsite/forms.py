@@ -54,6 +54,8 @@ class AnswerForm(forms.ModelForm):
     question3 = forms.CharField(widget=forms.Textarea,required=False)
     question4 = forms.CharField(widget=forms.Textarea,required=False)
     question5 = forms.CharField(widget=forms.Textarea,required=False)
+    block = forms.IntegerField(required=False)
+    numberID = forms.IntegerField(required=False)
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["email"].widget.attrs.update(
@@ -72,7 +74,6 @@ class AnswerForm(forms.ModelForm):
             {'required': True, 'name': 'year', 'id': 'year', 'class': 'form-control1', 'placeholder': 'Year'})
         self.fields["block"].widget.attrs.update(
             {'required': True, 'name': 'block', 'id': 'block', 'class': 'form-control1blk', 'placeholder': 'Block'})
-        
         self.fields["question1"].widget.attrs.update(
             {'required': True, 'name': 'question1', 'id': 'question1', 'type': 'text', 'class': 'textarea', 'placeholder': 'Share your experience','required minlength':'20', 'rows':'10', 'cols':'100', 'onkeyup':'countWords(this);'})
         self.fields["question2"].widget.attrs.update(

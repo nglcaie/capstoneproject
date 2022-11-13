@@ -72,6 +72,16 @@
 {% block content %}
 
 <p class="date-time">Today is {date} {time}</p>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>Upload CSV File</label>
+    <input type="file" name="file">
+    <p>Only accepts CSV files</p>
+    <button type="submit">Upload</button>
+</form>
+{% for message in messages %}
+{{message}}
+{% endfor %}   
 
         <!-- Question 1 -->
         <div class="analysis"> 

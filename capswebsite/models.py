@@ -111,14 +111,14 @@ class Answers(models.Model):
         ('5', '5'),
         ('6', '6'),
     )
-    email = models.EmailField(verbose_name="Email",max_length=60,unique=True,validators=[email_regex])
+    email = models.EmailField(verbose_name="Email",max_length=60,validators=[email_regex],blank=True)
     firstName = models.CharField(max_length=100, verbose_name='First Name', null=True,blank=True)
     lastName = models.CharField(max_length=100, verbose_name='Last Name', null=True,blank=True)
-    numberID = models.IntegerField(validators=[ID_regex],unique=True, verbose_name='Number ID', null=True)
+    numberID = models.CharField(max_length=100,validators=[ID_regex], verbose_name='Number ID', null=True,blank=True)
     college= models.ForeignKey(College, verbose_name='College',null=True,blank=True,on_delete=models.CASCADE)
     course= models.ForeignKey(Course, verbose_name='Course',null=True,blank=True,on_delete=models.CASCADE)
     year = models.CharField(max_length=10, choices=Year_CHOICES, verbose_name='Year', null=True,blank=True)
-    block = models.IntegerField(verbose_name='Block', null=True,blank=True)
+    block = models.CharField(max_length=10, verbose_name='Block', null=True,blank=True)
     question1 = models.CharField(max_length=1000, verbose_name="question1",null=True, blank =True)
     question2 = models.CharField(max_length=1000, verbose_name="question2",null=True, blank =True)
     question3 = models.CharField(max_length=1000, verbose_name="question3",null=True, blank =True)

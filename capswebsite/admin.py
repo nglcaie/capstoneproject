@@ -38,9 +38,15 @@ class CourseAdmin(admin.ModelAdmin):
     filter_horizontal = ()
     list_filter = ('college',)
 
+class AnswersAdmin(admin.ModelAdmin):
+    list_display = ('pk',)
+    search_fields = ('pk',)
+    ordering = ('pk',)
+    filter_horizontal = ()
+
 
 admin.site.register(User,UserAdmin)
 admin.site.register(College,CollegeAdmin)
 admin.site.register(Course,CourseAdmin)
-admin.site.register(Answers)
+admin.site.register(Answers,AnswersAdmin)
 admin.site.unregister(Group)
