@@ -122,7 +122,7 @@ def survey_question(request):
         change5 = request.POST.get('change5')
         param = 15
         if form.is_valid():
-            if (change < param) or (change2 < param) or (change3 < param) or (change4 < param) or (change5 < param):
+            if (int(change) < param) or (int(change2) < param) or (int(change3) < param) or (int(change4) < param) or (int(change5) < param):
                 messages.error(request, "The survey will only accept a minimum of 15 words per answer")
                 context['register'] = form
             else:
