@@ -342,10 +342,10 @@ def answers_csv(request): #csv bago toh
     answers = Answers.objects.all()
 
     #Add column headings to the csv file
-    writer.writerow(['email', 'firstName', 'lastName', 'numberID', 'college', 'course', 'year', 'block', 'question1', 'question2', 'question3', 'question4', 'question5'])
+    writer.writerow(['id','email', 'firstName', 'lastName', 'numberID', 'college', 'course', 'year', 'block', 'question1', 'question2', 'question3', 'question4', 'question5'])
 
     #Loop thru and output
     for answer in answers:
-        writer.writerow([answer.email, answer.firstName, answer.lastName, answer.numberID, answer.college, answer.course, answer.year, answer.block, answer.question1, answer.question2, answer.question3, answer.question4, answer.question5])
+        writer.writerow([answer.pk,answer.email, answer.firstName, answer.lastName, answer.numberID, answer.college, answer.course, answer.year, answer.block, answer.question1, answer.question2, answer.question3, answer.question4, answer.question5])
 
     return response
