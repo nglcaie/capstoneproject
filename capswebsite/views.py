@@ -110,12 +110,12 @@ def format_topics_sentences(ldamodel, corpus, texts):
 def frequency_plot(topic):
     doc_lens = [len(d) for d in topic.Text]
     # Plot
-    fig = plt.figure(figsize=(13,9))
+    fig = plt.figure()
     plt.hist(doc_lens, bins = 600, color='navy')
     plt.gca().set(xlim=(0, 600), ylabel='Number of Documents', xlabel="Document Word Count \n\n" + "Mean:" + str(round(np.mean(doc_lens))) + "   Median:" + str(round(np.median(doc_lens))) + "   Stdev:" + str(round(np.std(doc_lens))) + "   1%ile:" + str(round(np.quantile(doc_lens, q=0.01))) + "   99%ile:" + str(round(np.quantile(doc_lens, q=0.99))))
     plt.tick_params(size=20)
     plt.xticks(np.linspace(0,600,9))
-    plt.title('Distribution of Document Word Counts', fontdict=dict(size=22))
+    plt.title('Distribution of Document Word Counts', fontdict=dict(size=10))
     flike = io.BytesIO()
     fig.savefig(flike)
     b64 = base64.b64encode(flike.getvalue()).decode()
@@ -137,7 +137,7 @@ def distrib_dominant(dominant_topics):
     df = pd.DataFrame(dominant_topics, columns=['Document_Id', 'Dominant_Topic'])
     dominant_topic_in_each_doc = df.groupby('Dominant_Topic').size()
     df_dominant_topic_in_each_doc = dominant_topic_in_each_doc.to_frame(name='count').reset_index()
-    dominant_fig, ax1= plt.subplots(1, figsize=(10, 5), dpi=120, sharey=True)
+    dominant_fig, ax1= plt.subplots(1, dpi=120, sharey=True)
     # Topic Distribution by Dominant Topics
     ax1.bar(x='Dominant_Topic', height='count', data=df_dominant_topic_in_each_doc, width=.5, color='firebrick')
     ax1.set_xticks(range(df_dominant_topic_in_each_doc.Dominant_Topic.unique().__len__()))
@@ -155,7 +155,7 @@ def weightage_topic(topic_percentages):
     # Distribution of Dominant Topics in Each Document
     topic_weightage_by_doc = pd.DataFrame([dict(t) for t in topic_percentages])
     df_topic_weightage_by_doc = topic_weightage_by_doc.sum().to_frame(name='count').reset_index()
-    weightage_fig,ax2 = plt.subplots(1, figsize=(10, 5), dpi=120, sharey=True)
+    weightage_fig,ax2 = plt.subplots(1, dpi=120, sharey=True)
     # Topic Distribution by Dominant Topics
     # Topic Distribution by Topic Weights
     ax2.bar(x='index', height='count', data=df_topic_weightage_by_doc, width=.5, color='steelblue')

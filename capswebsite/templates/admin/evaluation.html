@@ -57,13 +57,17 @@
     }
 
     .visualization{
-        background-color: #f6f6f6;
+        /* background-color: #f6f6f6; */
         width: auto;
         height: auto;
         display: flex;
         place-items: center;
         place-content: center;
         padding: 20px;
+    }
+
+    .plt-pic{
+        width: 100%;
     }
 
 
@@ -91,29 +95,19 @@
             1. How does your environment affect your studying?
             <br><br><br>
             {% if param == "Empty" %}
-                <div class="visualization">
-                </div>
+            
+            <div class="visualization">
+                
             {% else %}
-            <div class="visualization">
-                <img src='data:image/png;base64,{{ chart1 }}' height="500">
+            
+                <img class="plt-pic" src='data:image/png;base64,{{ chart1 }}'>
                 <br><br>
+                <img class="plt-pic" src='data:image/png;base64,{{ dominant1 }}'>
                 <br><br>
+                <img class="plt-pic" src='data:image/png;base64,{{ weightage1 }}'>
+            
             </div>
-
-            <div class="visualization">
-                <img src='data:image/png;base64,{{ dominant1 }}' height="500">
-            </div>
-            <div class="visualization">
-                dshkdahsdkadhjadjakdaks
-                <br><br>
-                <br><br>
-            </div>
-            <div class="visualization">
-            <img src='data:image/png;base64,{{ weightage1 }}' height="500">
-            <br><br>
-            <br><br>
-            </div>
-        {% endif %}
+            {% endif %}
         </div>
         
         <!-- Question 2 -->
@@ -124,29 +118,21 @@
             2. How do you feel about the workload that is given to you during online classes?
             <br><br><br>
             {% if param == "Empty" %}
-                <div class="visualization">
-                </div>
+                
+            <div class="visualization">
+                
             {% else %}
-            <div class="visualization">
-                <img src='data:image/png;base64,{{ chart2 }}' height="500">
+            
+            
+                <img class="plt-pic" src='data:image/png;base64,{{ chart2 }}'>
                 <br><br>
+                <img class="plt-pic" src='data:image/png;base64,{{ dominant2 }}'>
                 <br><br>
-            </div>
-
-            <div class="visualization">
-                <img src='data:image/png;base64,{{ dominant2 }}' height="500">
-            </div>
-            <div class="visualization">
-                dshkdahsdkadhjadjakdaks
+                <img class="plt-pic" src='data:image/png;base64,{{ weightage2 }}'>
                 <br><br>
-                <br><br>
+            
             </div>
-            <div class="visualization">
-            <img src='data:image/png;base64,{{ weightage2 }}' height="500">
-            <br><br>
-            <br><br>
-            </div>
-        {% endif %}
+            {% endif %}
         </div>
 
         <!-- Question 3 -->
