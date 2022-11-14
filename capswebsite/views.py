@@ -141,7 +141,7 @@ def distrib_dominant(dominant_topics):
     # Topic Distribution by Dominant Topics
     ax1.bar(x='Dominant_Topic', height='count', data=df_dominant_topic_in_each_doc, width=.5, color='firebrick')
     ax1.set_xticks(range(df_dominant_topic_in_each_doc.Dominant_Topic.unique().__len__()))
-    tick_formatter = FuncFormatter(lambda x, pos: 'Topic \n' + str(x+1))
+    tick_formatter = FuncFormatter(lambda x, pos: str(x+1))
     ax1.xaxis.set_major_formatter(tick_formatter)
     ax1.set_title('Number of Documents by Dominant Topic', fontdict=dict(size=10))
     ax1.set_ylabel('Number of Documents')
@@ -160,7 +160,7 @@ def weightage_topic(topic_percentages):
     # Topic Distribution by Topic Weights
     ax2.bar(x='index', height='count', data=df_topic_weightage_by_doc, width=.5, color='steelblue')
     ax2.set_xticks(range(df_topic_weightage_by_doc.index.unique().__len__()))
-    tick_formatter = FuncFormatter(lambda x, pos: 'Topic \n' + str(x+1))
+    tick_formatter = FuncFormatter(lambda x, pos: str(x+1))
     ax2.xaxis.set_major_formatter(tick_formatter)
     ax2.set_title('Number of Documents by Topic Weightage', fontdict=dict(size=10))
     ax2.set_ylabel('Number of Documents')
