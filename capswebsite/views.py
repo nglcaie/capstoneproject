@@ -145,7 +145,7 @@ def distrib_dominant(dominant_topics):
     ax1.xaxis.set_major_formatter(tick_formatter)
     ax1.set_title('Number of Documents by Dominant Topic', fontdict=dict(size=18))
     ax1.set_ylabel('Number of Documents')
-    ax1.set_ylim(0, 600)
+    ax1.set_ylim(0, 500)
     flike = io.BytesIO()
     dominant_fig.savefig(flike)
     dom = base64.b64encode(flike.getvalue()).decode()
