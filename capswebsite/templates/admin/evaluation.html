@@ -82,11 +82,6 @@
 {% for message in messages %}
 {{message}}
 {% endfor %}   
-<form action='' method="post">
-    <!--bago toh-->
-    {% csrf_token %}
-    <button type="submit" class="printBTN" name="filter" value="Report" target="_blank">Hi</button> <br>
-</form>
 <a href="#Q3">Jump to Question 3</a>
         <!-- Question 1 -->
         <div class="analysis"> 
@@ -95,14 +90,30 @@
             <br><br>
             1. How does your environment affect your studying?
             <br><br><br>
-            
+            {% if param == "Empty" %}
+                <div class="visualization">
+                </div>
+            {% else %}
             <div class="visualization">
-                Topic for Train Model <br><br>
-                {% for topic in x1 %}
-                {{topic}}<br><br><br>
-                {%endfor%}
+                <img src='data:image/png;base64,{{ chart1 }}' height="500">
+                <br><br>
                 <br><br>
             </div>
+
+            <div class="visualization">
+                <img src='data:image/png;base64,{{ dominant1 }}' height="500">
+            </div>
+            <div class="visualization">
+                dshkdahsdkadhjadjakdaks
+                <br><br>
+                <br><br>
+            </div>
+            <div class="visualization">
+            <img src='data:image/png;base64,{{ weightage1 }}' height="500">
+            <br><br>
+            <br><br>
+            </div>
+        {% endif %}
         </div>
         
         <!-- Question 2 -->
@@ -112,14 +123,30 @@
             <br><br>
             2. How do you feel about the workload that is given to you during online classes?
             <br><br><br>
-            
+            {% if param == "Empty" %}
+                <div class="visualization">
+                </div>
+            {% else %}
             <div class="visualization">
-                Topic for Test Model <br><br>
-                {% for topic in x2 %}
-                {{topic}}<br><br><br>
-                {%endfor%}
+                <img src='data:image/png;base64,{{ chart2 }}' height="500">
+                <br><br>
                 <br><br>
             </div>
+
+            <div class="visualization">
+                <img src='data:image/png;base64,{{ dominant2 }}' height="500">
+            </div>
+            <div class="visualization">
+                dshkdahsdkadhjadjakdaks
+                <br><br>
+                <br><br>
+            </div>
+            <div class="visualization">
+            <img src='data:image/png;base64,{{ weightage2 }}' height="500">
+            <br><br>
+            <br><br>
+            </div>
+        {% endif %}
         </div>
 
         <!-- Question 3 -->

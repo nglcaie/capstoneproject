@@ -57,8 +57,11 @@ import spacy
 # Plotting tools
 import pyLDAvis
 import pyLDAvis.gensim_models
-#!pip install matplotlib
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import io, base64
+from matplotlib.ticker import FuncFormatter
+
 
 import os
 
@@ -88,6 +91,84 @@ def lemmatization(inputs):
         text_out.append(lem)
     return text_out
 
+def format_topics_sentences(ldamodel, corpus, texts):
+    sent_topics_df = pd.DataFrame()
+    for i, row in enumerate(ldamodel[corpus]):
+        row = sorted(row[0], key=lambda x: x[1], reverse=True) 
+        for j, (topic_num, prop_topic) in enumerate(row):
+            if j == 0:
+                wp = ldamodel.show_topic(topic_num)
+                topic_keywords = ", ".join([word for word, prop in wp])
+                sent_topics_df = sent_topics_df.append(pd.Series([int(topic_num), round(prop_topic,4), topic_keywords]), ignore_index=True)
+            else:
+                break
+    sent_topics_df.columns = ['Dominant_Topic', 'Perc_Contribution', 'Topic_Keywords']
+    contents = pd.Series(texts)
+    sent_topics_df = pd.concat([sent_topics_df, contents], axis=1)
+    return(sent_topics_df)
+
+def frequency_plot(topic):
+    doc_lens = [len(d) for d in topic.Text]
+    # Plot
+    fig = plt.figure(figsize=(13,9))
+    plt.hist(doc_lens, bins = 600, color='navy')
+    plt.gca().set(xlim=(0, 600), ylabel='Number of Documents', xlabel="Document Word Count \n\n" + "Mean:" + str(round(np.mean(doc_lens))) + "   Median:" + str(round(np.median(doc_lens))) + "   Stdev:" + str(round(np.std(doc_lens))) + "   1%ile:" + str(round(np.quantile(doc_lens, q=0.01))) + "   99%ile:" + str(round(np.quantile(doc_lens, q=0.99))))
+    plt.tick_params(size=20)
+    plt.xticks(np.linspace(0,600,9))
+    plt.title('Distribution of Document Word Counts', fontdict=dict(size=22))
+    flike = io.BytesIO()
+    fig.savefig(flike)
+    b64 = base64.b64encode(flike.getvalue()).decode()
+    return b64
+# Sentence Coloring of N Sentences
+def topics_per_document(model, corpus, start=0, end=1):
+    corpus_sel = corpus[start:end]
+    dominant_topics = []
+    topic_percentages = []
+    for i, corp in enumerate(corpus_sel):
+        topic_percs, wordid_topics, wordid_phivalues = model[corp]
+        dominant_topic = sorted(topic_percs, key = lambda x: x[1], reverse=True)[0][0]
+        dominant_topics.append((i, dominant_topic))
+        topic_percentages.append(topic_percs)
+    return(dominant_topics, topic_percentages)
+
+def distrib_dominant(dominant_topics):
+    # Distribution of Dominant Topics in Each Document
+    df = pd.DataFrame(dominant_topics, columns=['Document_Id', 'Dominant_Topic'])
+    dominant_topic_in_each_doc = df.groupby('Dominant_Topic').size()
+    df_dominant_topic_in_each_doc = dominant_topic_in_each_doc.to_frame(name='count').reset_index()
+    dominant_fig, ax1= plt.subplots(1, figsize=(10, 5), dpi=120, sharey=True)
+    # Topic Distribution by Dominant Topics
+    ax1.bar(x='Dominant_Topic', height='count', data=df_dominant_topic_in_each_doc, width=.5, color='firebrick')
+    ax1.set_xticks(range(df_dominant_topic_in_each_doc.Dominant_Topic.unique().__len__()))
+    tick_formatter = FuncFormatter(lambda x, pos: 'Topic \n' + str(x+1))
+    ax1.xaxis.set_major_formatter(tick_formatter)
+    ax1.set_title('Number of Documents by Dominant Topic', fontdict=dict(size=10))
+    ax1.set_ylabel('Number of Documents')
+    ax1.set_ylim(0, 600)
+    flike = io.BytesIO()
+    dominant_fig.savefig(flike)
+    dom = base64.b64encode(flike.getvalue()).decode()
+    return dom
+
+def weightage_topic(topic_percentages):
+    # Distribution of Dominant Topics in Each Document
+    topic_weightage_by_doc = pd.DataFrame([dict(t) for t in topic_percentages])
+    df_topic_weightage_by_doc = topic_weightage_by_doc.sum().to_frame(name='count').reset_index()
+    weightage_fig,ax2 = plt.subplots(1, figsize=(10, 5), dpi=120, sharey=True)
+    # Topic Distribution by Dominant Topics
+    # Topic Distribution by Topic Weights
+    ax2.bar(x='index', height='count', data=df_topic_weightage_by_doc, width=.5, color='steelblue')
+    ax2.set_xticks(range(df_topic_weightage_by_doc.index.unique().__len__()))
+    tick_formatter = FuncFormatter(lambda x, pos: 'Topic \n' + str(x+1))
+    ax2.xaxis.set_major_formatter(tick_formatter)
+    ax2.set_title('Number of Documents by Topic Weightage', fontdict=dict(size=10))
+    ax2.set_ylabel('Number of Documents')
+    ax2.set_ylim(0, 500)
+    flike = io.BytesIO()
+    weightage_fig.savefig(flike)
+    weight = base64.b64encode(flike.getvalue()).decode()
+    return weight
 
 
 #DJANGO WEBSITE
@@ -166,11 +247,13 @@ def admin_navbar(request):
 
 def evaluation(request):
     context={}
+    param = 'Empty'
     if (request.method == 'POST'):
         csvFile = request.FILES.get('file')
         if not csvFile.name.endswith('.csv'):
             messages.error(request, 'Please only upload csv file')
         else:
+            param = 'CSV'
             df_test = pd.read_csv(StringIO(csvFile.read().decode('utf-8')), delimiter=',')
             df_test['q1']=df_test['question1'].astype(str) #convert type to string
             df_test['q1']=df_test['q1'].apply(lambda x: x.lower()) #all lowercase
@@ -312,20 +395,41 @@ def evaluation(request):
             vector = lda[unseen_doc]
             lda.update(corpus_test)
             vector = lda[unseen_doc]
-            return improve_stop_words_test,texts_test,corpus_test,lda,x1
+            return improve_stop_words_test,texts_test,corpus_test,lda
             
         improve_stop_words_test1,texts_test1,corpus_test1,lda_model1 = cleaning1(raw_data_test1)
-        improve_stop_words_test2,texts_test2,corpus_test2,lda_model2,pre = cleaning2(raw_data_test2)
+        improve_stop_words_test2,texts_test2,corpus_test2,lda_model2= cleaning2(raw_data_test2)
+        #frequenct_plot
+        df_topic_sents_keywords1 = format_topics_sentences(ldamodel=lda_model1, corpus=corpus_test1, texts=raw_data_test1)
+        df_dominant_topic1 = df_topic_sents_keywords1.reset_index()
+        df_dominant_topic1.columns = ['Document_No', 'Dominant_Topic', 'Topic_Perc_Contrib', 'Keywords', 'Text']
+        df_topic_sents_keywords2 = format_topics_sentences(ldamodel=lda_model2, corpus=corpus_test2, texts=raw_data_test2)
+        df_dominant_topic2 = df_topic_sents_keywords2.reset_index()
+        df_dominant_topic2.columns = ['Document_No', 'Dominant_Topic', 'Topic_Perc_Contrib', 'Keywords', 'Text']
+        freq_plot1 = frequency_plot(df_dominant_topic1)  
+        freq_plot2 = frequency_plot(df_dominant_topic2)
+        #dominant and weightage
+        dominant_topics1, topic_percentages1 = topics_per_document(model=lda_model1, corpus=corpus_test1, end=-1)
+        dom_plot1 = distrib_dominant(dominant_topics1)
+        weightage_plot1 = weightage_topic(topic_percentages1)
+        dominant_topics2, topic_percentages2 = topics_per_document(model=lda_model2, corpus=corpus_test2, end=-1)
+        dom_plot2 = distrib_dominant(dominant_topics2)
+        weightage_plot2 = weightage_topic(topic_percentages2)
 
 
-
+        context['chart1'] = freq_plot1
+        context['chart2'] = freq_plot2
+        context['dominant1'] = dom_plot1
+        context['weightage1'] = weightage_plot1
+        context['dominant2'] = dom_plot2
+        context['weightage2'] = weightage_plot2
+        context['param'] = param
         #pprint(lda.print_topics())
-        x1= lda_model1.print_topics()
-        context['x1'] = x1
-        pre= pre
-        x2= lda_model2.print_topics()
-        context['x2'] = x2
-        context['pre'] = pre
+        #x1= lda_model1.print_topics()
+        #context['x1'] = x1
+        #x2= lda_model2.print_topics()
+        #context['x2'] = x2
+    context['param'] = param
     return render(request, 'admin/evaluation.html',context)
  
 def student_list(request):
