@@ -82,7 +82,12 @@
 {% for message in messages %}
 {{message}}
 {% endfor %}   
-
+<form action='' method="post">
+    <!--bago toh-->
+    {% csrf_token %}
+    <button type="submit" class="printBTN" name="filter" value="Report" target="_blank">Hi</button> <br>
+</form>
+<a href="#Q3">Jump to Question 3</a>
         <!-- Question 1 -->
         <div class="analysis"> 
             
@@ -97,11 +102,6 @@
                 {{topic}}<br><br><br>
                 {%endfor%}
                 <br><br>
-                Topic for Test Model <br>
-                {% for topic in x2 %}
-                {{topic}}<br><br><br>
-                {%endfor%}
-                
             </div>
         </div>
         
@@ -114,14 +114,18 @@
             <br><br><br>
             
             <div class="visualization">
-                Visual Representation
+                Topic for Test Model <br><br>
+                {% for topic in x2 %}
+                {{topic}}<br><br><br>
+                {%endfor%}
+                <br><br>
             </div>
         </div>
 
         <!-- Question 3 -->
         <div class="analysis"> 
             
-            <span>Question #3</span>
+            <span id="Q3">Question #3</span>
             <br><br>
             3. What can you say about your physical health in relation to online learning? (Sleep quality, physical activity, feelings of mental or physical fatigue, etc.)
             <br><br><br>
