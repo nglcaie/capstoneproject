@@ -8,6 +8,8 @@
         min-height: 100vh;
         background: linear-gradient(155.57deg, #FDFBFE 36.97%, #D8F2F2 83.32%);
         background-repeat: no-repeat;
+
+        overflow-x: hidden;
     }
     
     .date-time {
@@ -69,23 +71,133 @@
         width: 100%;
     }
 
+    input[type=file]::file-selector-button {
+        background-color: white;
+        border: none;
+        color: #5CC5A2;
+        padding: 7px 13px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        
+        cursor: pointer;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 800;
+        font-size: 1em;
+        border-radius: 10px;
+        border: 2px solid #5CC5A2;
+    }
+    input[type=file]::file-selector-button:hover {
+        background-color: #98E9CE;
+        border: none;
+        color: white;
+        padding: 9px 15px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        
+        cursor: pointer;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 800;
+        font-size: 1em;
+        border-radius: 10px;
+    }
 
+    .upload-div{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1em;
+        color: #404040;
+    }
+
+
+    .choose-file{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: .8em;
+        color: #404040;
+    }
+
+    .upload-btn{
+        background-color: #5CC5A2;
+        border: none;
+        color: white;
+        padding: 9px 15px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        
+        cursor: pointer;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 800;
+        font-size: .8em;
+        border-radius: 10px;
+    }
+
+    .upload-btn:hover {
+        background-color: #98E9CE;
+        color: white;
+    }
+
+    a{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: .8em;
+        text-decoration: none;
+        color:#5CC5A2;
+    }
+    a:hover{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: .8em;
+        text-decoration: none;
+        color:#3fa181;
+    }
+
+    .table{
+        width: 100%;
+        margin-left: 10%;
+    }
 </style>
 
 {% block content %}
 
 <p class="date-time">Today is {date} {time}</p>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <label>Upload CSV File</label>
-    <input type="file" name="file">
-    <p>Only accepts CSV files</p>
-    <button type="submit">Upload</button>
-</form>
-{% for message in messages %}
-{{message}}
-{% endfor %}   
-<a href="#Q3">Jump to Question 3</a>
+    <table class="table">
+        <td>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="upload-div">
+                <label>Upload CSV File</label>
+                <br><br>
+                <input class="choose-file" type="file" name="file">
+                <!-- <p>Only accepts CSV files</p> -->
+                <br><br>
+                <button class="upload-btn" type="submit">Upload</button>
+            </div>
+        </form>
+        {% for message in messages %}
+        {{message}}
+        {% endfor %}
+        </td>
+
+        <td>
+        <br><br>
+        <a href="#Q3">Jump to Question 1</a> <br>
+        <a href="#Q3">Jump to Question 2</a> <br>
+        <a href="#Q3">Jump to Question 3</a> <br>
+        <a href="#Q3">Jump to Question 4</a> <br>
+        <a href="#Q3">Jump to Question 5</a>
+        </td>
+    </table>
+
         <!-- Question 1 -->
         <div class="analysis"> 
             
