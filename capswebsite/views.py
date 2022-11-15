@@ -299,11 +299,14 @@ def evaluation(request):
             df_test['q3']=df_test['q3'].apply(lambda x: x.lower()) #all lowercase
             df_test['q4']=df_test['question4'].astype(str) #convert type to string
             df_test['q4']=df_test['q4'].apply(lambda x: x.lower()) #all lowercase
+            df_test['q5']=df_test['question5'].astype(str) #convert type to string
+            df_test['q5']=df_test['q5'].apply(lambda x: x.lower()) #all lowercase
 
             raw_data_test1 = df_test.q1.values.tolist() #<--covert to list
             raw_data_test2 = df_test.q2.values.tolist() #<--covert to list
             raw_data_test3 = df_test.q3.values.tolist() #<--covert to list
             raw_data_test4 = df_test.q4.values.tolist() #<--covert to list
+            raw_data_test5 = df_test.q5.values.tolist() #<--covert to list
 
         def cleaning1(raw_data_test):
             #temp_file = datapath('D:\capstone\capstone\capswebsite\model\lda_model1')
@@ -503,7 +506,7 @@ def evaluation(request):
             return improve_stop_words_test,texts_test,corpus_test,lda
 
         def cleaning4(raw_data_test):
-            #temp_file = datapath('D:\capstone\capstone\capswebsite\model\lda_model1')
+             #temp_file = datapath('D:\capstone\capstone\capswebsite\model\lda_model1')
             temp_file = datapath(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static\model\lda_model4'))
             lda = models.ldamodel.LdaModel.load(temp_file)
             x1= lda.print_topics()
@@ -562,6 +565,73 @@ def evaluation(request):
             vector = lda[unseen_doc]
             return improve_stop_words_test,texts_test,corpus_test,lda
 
+
+        def cleaning5(raw_data_test):
+            #temp_file = datapath('D:\capstone\capstone\capswebsite\model\lda_model1')
+            temp_file = datapath(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static\model\lda_model5'))
+            lda = models.ldamodel.LdaModel.load(temp_file)
+            x1= lda.print_topics()
+            #dicts = corpora.Dictionary.load('D:\capstone\capstone\capswebsite\model\lda_model1.id2word')
+            id2word = corpora.Dictionary.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static\model\lda_model5.id2word'))
+            def expand_contractions(inputs):
+                contractions.add('profs', 'professors')
+                contractions.add('prof', 'professor')
+                contractions.add('f2f','face to face')
+                contractions.add('ok','okay')
+                expanded = []
+                for sent in inputs:
+                    text_out = []
+                    for word in sent.split():
+                        text_out.append(contractions.fix(word))  
+                        expanded_text = ' '.join(text_out)
+                    expanded.append(text_out)
+                return expanded
+            stop_words = STOPWORDS
+            stop_words = STOPWORDS.union(set(['yes','tree','know','way','cause','specially','especially','create','come','ung','make','become','like','also','able',
+                                  'currently','really','have','lot', 'belong', 'bond', 'people', 'person', 'aside', 'ypur', 'house', 'anymore', 
+                                  'mean', 'use', 'happen', 'add', 'certain', 'feel', 'honestly', 'rise', 'sisters', 'ny', 'term',
+                                  'think', 'felt', 'long', 'lessen', 'small', 'real', 'daughter', 'reason']))
+            sw_list = {'cannot','not','do','can','should','would','very','much','too','lot','alot','really','to','sometimes','of','does','no'}
+            stop_words = stop_words.difference(sw_list)
+            def remove_stopwords(texts):
+                return [[word for word in simple_preprocess(str(doc)) if word not in stop_words] for doc in texts]
+            stop_words_improve = STOPWORDS
+            # stop_words_improve = STOPWORDS.union(set(['really_afect', 'try_to', 'need_to', 'come_to', 'compare_to', 'want_to', 'term_of', 'do_not', 'can_not',
+    #                                           'tend_to', 'not_do', 'feel_wear']))
+            def remove_stopwords_improve(texts):
+                return [[word for word in simple_preprocess(str(doc)) if word not in stop_words_improve] for doc in texts]
+
+            data_test = expand_contractions(raw_data_test)
+            data_words_test = list(sent_to_words(data_test)) #apply tokenization
+            data_lemmatized_test = lemmatization(data_words_test)
+            data_words_nostops_test = remove_stopwords(data_lemmatized_test)
+            bigram = gensim.models.Phrases(data_words_test, min_count=2, threshold=5) # higher threshold fewer phrases.
+            trigram = gensim.models.Phrases(bigram[data_words_test], threshold=5)  
+            quadgram = gensim.models.Phrases(trigram[data_words_test],threshold=5)  
+            bigram_mod = gensim.models.phrases.Phraser(bigram)
+            trigram_mod = gensim.models.phrases.Phraser(trigram)
+            quadram_mod = gensim.models.phrases.Phraser(quadgram)
+            def make_bigrams(texts):
+                return [bigram_mod[doc] for doc in texts]
+            def make_trigrams(texts):
+                return [trigram_mod[bigram_mod[doc]] for doc in texts]
+            def make_quadrams(texts):
+                return [quadram_mod[trigram_mod[bigram_mod[doc]]] for doc in texts]
+            data_words_bigrams_test = make_bigrams(data_words_nostops_test)
+            data_words_trigrams_test = make_trigrams(data_words_bigrams_test)
+            data_words_quadrams_test = make_quadrams(data_words_trigrams_test)
+            improve_stop_words_test = remove_stopwords_improve(data_words_quadrams_test)
+            texts_test = improve_stop_words_test
+            corpus_test = [id2word.doc2bow(text) for text in texts_test]
+            unseen_doc = corpus_test
+            vector = lda[unseen_doc]
+            lda.update(corpus_test)
+            vector = lda[unseen_doc]
+            return improve_stop_words_test,texts_test,corpus_test,lda
+
+
+            
+
         #question1   
         improve_stop_words_test1,texts_test1,corpus_test1,lda_model1 = cleaning1(raw_data_test1)
         #dominant and weightage
@@ -590,6 +660,13 @@ def evaluation(request):
         dom_plot4 = distrib_dominant(dominant_topics4,lda_model4,30)
         weightage_plot4 = weightage_topic(topic_percentages4,lda_model4,30)
 
+        #question5
+        improve_stop_words_test5,texts_test5,corpus_test5,lda_model5= cleaning5(raw_data_test5)
+        #dominant and weightage
+        dominant_topics5, topic_percentages5 = topics_per_document(model=lda_model5, corpus=corpus_test5, end=-1)
+        dom_plot5 = distrib_dominant(dominant_topics5,lda_model5,20)
+        weightage_plot5 = weightage_topic(topic_percentages5,lda_model5,20)
+
 
 
         context['dominant1'] = dom_plot1
@@ -600,6 +677,8 @@ def evaluation(request):
         context['weightage3'] = weightage_plot3
         context['dominant4'] = dom_plot4
         context['weightage4'] = weightage_plot4
+        context['dominant5'] = dom_plot5
+        context['weightage5'] = weightage_plot5
 
 
         context['param'] = param
