@@ -196,7 +196,7 @@ def word_cloud_gen(raw_data):
     stop_words = stop_words.difference(sw_list)
     wordcloud = WordCloud(stopwords = stop_words, width=1600,height=800,background_color='white').generate((str(raw_data)))
     # create a figure
-    word_fig, ax = plt.subplots(1,1, figsize = (5,5), dpi=300)
+    word_fig, ax = plt.subplots(1,1, figsize = (5,3), dpi=300)
     # add interpolation = bilinear to smooth things out
     plt.imshow(wordcloud, interpolation='bilinear')
     # and remove the axis
@@ -263,7 +263,7 @@ def survey_question(request):
         param = 10
         if form.is_valid():
             if (int(change) < param) or (int(change2) < param) or (int(change3) < param) or (int(change4) < param) or (int(change5) < param):
-                messages.error(request, "The survey will only accept a minimum of 15 words per answer")
+                messages.error(request, "The survey will only accept a minimum of 10 words per answer")
                 context['register'] = form
             else:
                 form.save()

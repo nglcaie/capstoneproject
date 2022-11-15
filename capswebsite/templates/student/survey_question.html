@@ -16,7 +16,7 @@
         font-weight: 700;
         font-size: 2em;
         text-align: center;
-        margin-top: 1.8em;
+        margin-top: 1em;
 
         color: #404040;
     }
@@ -36,7 +36,9 @@
         max-width: 55%;
         height: auto;
         padding: 40px;
-        margin: 80px auto;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 60px;
 
         background: #FFFFFF;
         box-shadow: 0px 14px 15px rgba(0, 0, 0, 0.1);
@@ -225,14 +227,31 @@
 
         color: #8F8F8F;;
     }
+
+    .min-10{
+        width: auto;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        display: flex;
+        place-items: center;
+        place-content: center;
+
+        color: #DA2929;
+    }
 </style>
 
 {% block content%}
 
-<div class="title">Survey Questionnaire</div> <br>
+
+<br><br>
 {% for message in messages %}
-{{message}}
-{% endfor %}   
+<label class="min-10">{{message}}</label> 
+{% endfor %}
+
+<div class="title">Survey Questionnaire</div> <br>
+ 
 <form method="post" id="personForm" data-cities-url="{% url 'ajax_load_slot' %}">
     {% csrf_token %}
 
@@ -297,7 +316,7 @@
 
 
 
-
+    <br><br><br><br>
     <!-- Question 1 -->
     <div class="qna">
         {{register.student}}
