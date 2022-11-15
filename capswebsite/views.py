@@ -110,12 +110,13 @@ def format_topics_sentences(ldamodel, corpus, texts):
 def frequency_plot(topic):
     doc_lens = [len(d) for d in topic.Text]
     # Plot
-    fig = plt.figure(figsize=(16,7))
+    fig = plt.figure(figsize=(16,7), dpi=300)
     plt.hist(doc_lens, bins = 600, color='navy')
     plt.gca().set(xlim=(0, 600), ylabel='Number of Documents', xlabel="Document Word Count \n\n" + "Mean:" + str(round(np.mean(doc_lens))) + "   Median:" + str(round(np.median(doc_lens))) + "   Stdev:" + str(round(np.std(doc_lens))) + "   1%ile:" + str(round(np.quantile(doc_lens, q=0.01))) + "   99%ile:" + str(round(np.quantile(doc_lens, q=0.99))))
     plt.tick_params(size=20)
     plt.xticks(np.linspace(0,600,9))
     plt.title('Distribution of Document Word Counts', fontdict=dict(size=18))
+    fig.tight_layout()
     flike = io.BytesIO()
     fig.savefig(flike)
     b64 = base64.b64encode(flike.getvalue()).decode()
@@ -132,39 +133,52 @@ def topics_per_document(model, corpus, start=0, end=1):
         topic_percentages.append(topic_percs)
     return(dominant_topics, topic_percentages)
 
-def distrib_dominant(dominant_topics):
+def distrib_dominant(dominant_topics,lda_model,num_topics):
     # Distribution of Dominant Topics in Each Document
     df = pd.DataFrame(dominant_topics, columns=['Document_Id', 'Dominant_Topic'])
     dominant_topic_in_each_doc = df.groupby('Dominant_Topic').size()
     df_dominant_topic_in_each_doc = dominant_topic_in_each_doc.to_frame(name='count').reset_index()
-    dominant_fig, ax1= plt.subplots(1, figsize=(16,7), dpi=120, sharey=True)
+    # Top 3 Keywords for each Topic
+    topic_top3words = [(i, topic) for i, topics in lda_model.show_topics(num_topics=num_topics,formatted=False) 
+                                    for j, (topic, wt) in enumerate(topics) if j < 10]
+    df_top3words_stacked = pd.DataFrame(topic_top3words, columns=['topic_id', 'words'])
+    df_top3words = df_top3words_stacked.groupby('topic_id').agg(', \n'.join)
+    df_top3words.reset_index(level=0,inplace=True)
     # Topic Distribution by Dominant Topics
+    dominant_fig, ax1= plt.subplots(1, figsize=(20, 10),dpi=300, sharey=True)
     ax1.bar(x='Dominant_Topic', height='count', data=df_dominant_topic_in_each_doc, width=.5, color='firebrick')
     ax1.set_xticks(range(df_dominant_topic_in_each_doc.Dominant_Topic.unique().__len__()))
-    tick_formatter = FuncFormatter(lambda x, pos: 'Topic \n' + str(x+1))
+    tick_formatter = FuncFormatter(lambda x, pos: 'Topic ' + str(x+1)+ '\n' + df_top3words.loc[df_top3words.topic_id==x, 'words'].values[0])
     ax1.xaxis.set_major_formatter(tick_formatter)
-    ax1.set_title('Number of Documents by Dominant Topic', fontdict=dict(size=18))
-    ax1.set_ylabel('Number of Documents')
-    ax1.set_ylim(0, 500)
+    ax1.set_title('Number of Documents by Dominant Topic', fontdict=dict(size=30))
+    ax1.set_ylabel('Number of Documents',fontdict=dict(size=30))
+    ax1.set_ylim(0, 700)
     flike = io.BytesIO()
+    dominant_fig.tight_layout()
     dominant_fig.savefig(flike)
     dom = base64.b64encode(flike.getvalue()).decode()
     return dom
 
-def weightage_topic(topic_percentages):
+def weightage_topic(topic_percentages,lda_model,num_topics):
     # Distribution of Dominant Topics in Each Document
     topic_weightage_by_doc = pd.DataFrame([dict(t) for t in topic_percentages])
     df_topic_weightage_by_doc = topic_weightage_by_doc.sum().to_frame(name='count').reset_index()
-    weightage_fig,ax2 = plt.subplots(1, figsize=(16,7), dpi=120, sharey=True)
-    # Topic Distribution by Dominant Topics
+    # Top 3 Keywords for each Topic
+    topic_top3words = [(i, topic) for i, topics in lda_model.show_topics(num_topics=num_topics,formatted=False) 
+                                    for j, (topic, wt) in enumerate(topics) if j < 10]
+    df_top3words_stacked = pd.DataFrame(topic_top3words, columns=['topic_id', 'words'])
+    df_top3words = df_top3words_stacked.groupby('topic_id').agg(', \n'.join)
+    df_top3words.reset_index(level=0,inplace=True)
     # Topic Distribution by Topic Weights
+    weightage_fig,ax2 = plt.subplots(1, figsize=(20, 10),dpi=300, sharey=True)
     ax2.bar(x='index', height='count', data=df_topic_weightage_by_doc, width=.5, color='steelblue')
     ax2.set_xticks(range(df_topic_weightage_by_doc.index.unique().__len__()))
-    tick_formatter = FuncFormatter(lambda x, pos: 'Topic \n' + str(x+1))
+    tick_formatter = FuncFormatter(lambda x, pos: 'Topic ' + str(x+1)+ '\n' + df_top3words.loc[df_top3words.topic_id==x, 'words'].values[0])
     ax2.xaxis.set_major_formatter(tick_formatter)
-    ax2.set_title('Number of Documents by Topic Weightage', fontdict=dict(size=18))
-    ax2.set_ylabel('Number of Documents')
-    ax2.set_ylim(0, 500)
+    ax2.set_title('Number of Documents by Topic Weightage', fontdict=dict(size=30))
+    ax2.set_ylabel('Number of Documents', fontdict=dict(size=30))
+    ax2.set_ylim(0, 700)
+    weightage_fig.tight_layout()
     flike = io.BytesIO()
     weightage_fig.savefig(flike)
     weight = base64.b64encode(flike.getvalue()).decode()
@@ -397,28 +411,22 @@ def evaluation(request):
             vector = lda[unseen_doc]
             return improve_stop_words_test,texts_test,corpus_test,lda
             
+        #question1   
         improve_stop_words_test1,texts_test1,corpus_test1,lda_model1 = cleaning1(raw_data_test1)
-        improve_stop_words_test2,texts_test2,corpus_test2,lda_model2= cleaning2(raw_data_test2)
-        #frequenct_plot
-        df_topic_sents_keywords1 = format_topics_sentences(ldamodel=lda_model1, corpus=corpus_test1, texts=raw_data_test1)
-        df_dominant_topic1 = df_topic_sents_keywords1.reset_index()
-        df_dominant_topic1.columns = ['Document_No', 'Dominant_Topic', 'Topic_Perc_Contrib', 'Keywords', 'Text']
-        df_topic_sents_keywords2 = format_topics_sentences(ldamodel=lda_model2, corpus=corpus_test2, texts=raw_data_test2)
-        df_dominant_topic2 = df_topic_sents_keywords2.reset_index()
-        df_dominant_topic2.columns = ['Document_No', 'Dominant_Topic', 'Topic_Perc_Contrib', 'Keywords', 'Text']
-        freq_plot1 = frequency_plot(df_dominant_topic1)  
-        freq_plot2 = frequency_plot(df_dominant_topic2)
         #dominant and weightage
         dominant_topics1, topic_percentages1 = topics_per_document(model=lda_model1, corpus=corpus_test1, end=-1)
-        dom_plot1 = distrib_dominant(dominant_topics1)
-        weightage_plot1 = weightage_topic(topic_percentages1)
+        dom_plot1 = distrib_dominant(dominant_topics1,lda_model1,20)
+        weightage_plot1 = weightage_topic(topic_percentages1,lda_model1,20)
+
+        #question2
+        improve_stop_words_test2,texts_test2,corpus_test2,lda_model2= cleaning2(raw_data_test2)
+        #dominant and weightage
         dominant_topics2, topic_percentages2 = topics_per_document(model=lda_model2, corpus=corpus_test2, end=-1)
-        dom_plot2 = distrib_dominant(dominant_topics2)
-        weightage_plot2 = weightage_topic(topic_percentages2)
+        dom_plot2 = distrib_dominant(dominant_topics2,lda_model2,20)
+        weightage_plot2 = weightage_topic(topic_percentages2,lda_model2,20)
 
 
-        context['chart1'] = freq_plot1
-        context['chart2'] = freq_plot2
+
         context['dominant1'] = dom_plot1
         context['weightage1'] = weightage_plot1
         context['dominant2'] = dom_plot2
