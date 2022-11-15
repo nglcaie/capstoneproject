@@ -284,6 +284,9 @@ def admin_navbar(request):
 def evaluation(request):
     context={}
     param = 'Empty'
+    date2day = date.today() #datetime = date + time
+    #day = date.weekday() 
+    day2day = datetime.today().weekday()
     if (request.method == 'POST'):
         csvFile = request.FILES.get('file')
         if not csvFile.name.endswith('.csv'):
@@ -688,9 +691,16 @@ def evaluation(request):
         #x2= lda_model2.print_topics()
         #context['x2'] = x2
     context['param'] = param
+    context['date2day'] = date2day
+    context['day2day'] = day2day
+    #context['day'] = day
+    
     return render(request, 'admin/evaluation.html',context)
+
  
 def student_list(request):
+    context={}
+    date2day = date.today() #datetime = date + time
     answers = Answers.objects.all
     if (request.method == 'POST'):
         csvFile = request.FILES.get('file')
@@ -716,11 +726,16 @@ def student_list(request):
                     question4 = row[12],
                     question5 = row[13],
                 )
-    return render(request,'admin/student_list.html',{'answers':answers})
+    context['date2day'] = date2day
+    context['answers'] = answers
+    return render(request,'admin/student_list.html',context)
     
 def student_answer(request, pk):
+    context={}
+    date2day = date.today() #datetime = date + time
     answers = Answers.objects.filter(id=pk)
     context = {'answers':answers}
+    context['date2day'] = date2day
     return render(request, 'admin/student_answer.html',context)
  
 def load_slot(request):
@@ -750,6 +765,7 @@ def answers_csv(request): #csv bago toh
 
 def word_cloud_page(request):
     context={}
+    date2day = date.today() #datetime = date + time
     answers = Answers.objects.all().values()
     ans_count = Answers.objects.all().count()
     print(ans_count)
@@ -786,4 +802,6 @@ def word_cloud_page(request):
         context['word_cloud4'] = word_cloud4
         context['word_cloud5'] = word_cloud5
     context['param'] = param
+    context['date2day'] = date2day
     return render(request, 'word_cloud.html', context)
+    

@@ -200,7 +200,7 @@
 {% block content %}
 
 
-    <p class="date-time">Today is {date} {time}</p>
+    <p class="date-time">Today is {{date2day}}</p>
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
