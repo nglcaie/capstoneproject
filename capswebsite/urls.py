@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin_navbar',views.admin_navbar, name="admin_navbar"),
     path('ajax/load-slot/', views.load_slot, name='ajax_load_slot'),
     path('answers_csv',views.answers_csv, name="answers_csv"),
+    path('word_cloud_page',views.word_cloud_page, name="word_cloud_page"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -37,6 +37,7 @@ from nltk import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet 
+#!pip install contractions
 import contractions
 
 #Gensim
@@ -58,9 +59,14 @@ import spacy
 import pyLDAvis
 import pyLDAvis.gensim_models
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
+import matplotlib
+matplotlib.use('Agg')
 import io, base64
 from matplotlib.ticker import FuncFormatter
+
+#word cloud
+#!pip install word_cloud
+from wordcloud import WordCloud
 
 
 import os
@@ -184,6 +190,22 @@ def weightage_topic(topic_percentages,lda_model,num_topics):
     weight = base64.b64encode(flike.getvalue()).decode()
     return weight
 
+def word_cloud_gen(raw_data):
+    stop_words = STOPWORDS
+    sw_list = {'cannot','not','do','can','should','would','very','much','too','lot','alot','really','to','sometimes','of','does','no','will','just'}
+    stop_words = stop_words.difference(sw_list)
+    wordcloud = WordCloud(stopwords = stop_words, width=1600,height=800,background_color='white').generate((str(raw_data)))
+    # create a figure
+    word_fig, ax = plt.subplots(1,1, figsize = (5,5), dpi=300)
+    # add interpolation = bilinear to smooth things out
+    plt.imshow(wordcloud, interpolation='bilinear')
+    # and remove the axis
+    plt.axis("off")
+    plt.tight_layout()
+    flike = io.BytesIO()
+    word_fig.savefig(flike)
+    word = base64.b64encode(flike.getvalue()).decode()
+    return word
 
 #DJANGO WEBSITE
 
@@ -238,7 +260,7 @@ def survey_question(request):
         change3 = request.POST.get('change3')
         change4 = request.POST.get('change4')
         change5 = request.POST.get('change5')
-        param = 15
+        param = 10
         if form.is_valid():
             if (int(change) < param) or (int(change2) < param) or (int(change3) < param) or (int(change4) < param) or (int(change5) < param):
                 messages.error(request, "The survey will only accept a minimum of 15 words per answer")
@@ -496,3 +518,44 @@ def answers_csv(request): #csv bago toh
         writer.writerow([answer.pk,answer.email, answer.firstName, answer.lastName, answer.numberID, answer.college, answer.course, answer.year, answer.block, answer.question1, answer.question2, answer.question3, answer.question4, answer.question5])
 
     return response
+
+
+def word_cloud_page(request):
+    context={}
+    answers = Answers.objects.all().values()
+    ans_count = Answers.objects.all().count()
+    print(ans_count)
+    if ans_count == 0:
+        param = "Empty"
+        context['param'] = param
+    else:
+        param = "Not Empty"
+        df = pd.DataFrame(answers)
+        #print(df.head(10))
+        df['q1']=df['question1'].astype(str) #convert type to string
+        df['q1']=df['q1'].apply(lambda x: x.lower()) #all lowercase
+        df['q2']=df['question2'].astype(str) #convert type to string
+        df['q2']=df['q2'].apply(lambda x: x.lower()) #all lowercase
+        df['q3']=df['question3'].astype(str) #convert type to string
+        df['q3']=df['q3'].apply(lambda x: x.lower()) #all lowercase
+        df['q4']=df['question4'].astype(str) #convert type to string
+        df['q4']=df['q4'].apply(lambda x: x.lower()) #all lowercase
+        df['q5']=df['question5'].astype(str) #convert type to string
+        df['q5']=df['q5'].apply(lambda x: x.lower()) #all lowercase
+        raw_data_test1 = df.q1.values.tolist() #<--covert to list
+        raw_data_test2 = df.q2.values.tolist() #<--covert to list
+        raw_data_test3 = df.q3.values.tolist() #<--covert to list
+        raw_data_test4 = df.q4.values.tolist() #<--covert to list
+        raw_data_test5 = df.q5.values.tolist() #<--covert to list
+        word_cloud1 = word_cloud_gen(raw_data_test1)
+        word_cloud2 = word_cloud_gen(raw_data_test2)
+        word_cloud3 = word_cloud_gen(raw_data_test3)
+        word_cloud4 = word_cloud_gen(raw_data_test4)
+        word_cloud5 = word_cloud_gen(raw_data_test5)
+        context['word_cloud1'] = word_cloud1
+        context['word_cloud2'] = word_cloud2
+        context['word_cloud3'] = word_cloud3
+        context['word_cloud4'] = word_cloud4
+        context['word_cloud5'] = word_cloud5
+    context['param'] = param
+    return render(request, 'word_cloud.html', context)

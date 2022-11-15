@@ -190,50 +190,45 @@
 
         <td>
         <br><br>
-        <a href="#Q3">Jump to Question 1</a> <br>
-        <a href="#Q3">Jump to Question 2</a> <br>
+        <a href="#Q1">Jump to Question 1</a> <br>
+        <a href="#Q2">Jump to Question 2</a> <br>
         <a href="#Q3">Jump to Question 3</a> <br>
-        <a href="#Q3">Jump to Question 4</a> <br>
-        <a href="#Q3">Jump to Question 5</a>
+        <a href="#Q4">Jump to Question 4</a> <br>
+        <a href="#Q5">Jump to Question 5</a><br>
+        <a href="{% url 'word_cloud_page' %}">See Word Cloud</a>
         </td>
     </table>
-
+{% if param == "Empty" %}
+                
+    <div class="visualization">
+    </div>
+        
+{% else %}
         <!-- Question 1 -->
         <div class="analysis"> 
             
-            <span>Question #1</span>
+            <span id="Q1">Question #1</span>
             <br><br>
             1. How does your environment affect your studying?
-            <br><br><br>
-            {% if param == "Empty" %}
-            
+            <br><br><br>    
             <div class="visualization">
             </div>
-                
-            {% else %}
             
                 <img class="plt-pic" src='data:image/png;base64,{{ dominant1 }}'>
                 <br><br>
                 <img class="plt-pic" src='data:image/png;base64,{{ weightage1 }}'>
             
             </div>
-            {% endif %}
+            
         </div>
         
         <!-- Question 2 -->
         <div class="analysis"> 
             
-            <span>Question #2</span>
+            <span id="Q2">Question #2</span>
             <br><br>
             2. How do you feel about the workload that is given to you during online classes?
-            <br><br><br>
-            {% if param == "Empty" %}
-                
-            <div class="visualization">
-            </div>
-                
-            {% else %}
-            
+            <br><br><br>            
                 <img class="plt-pic" src='data:image/png;base64,{{ dominant2 }}'>
                 <br><br>
                 dfsfsfsd
@@ -242,7 +237,7 @@
                 <br><br>
             
             </div>
-            {% endif %}
+           
         </div>
 
         <!-- Question 3 -->
@@ -261,7 +256,7 @@
         <!-- Question 4 -->
         <div class="analysis"> 
             
-            <span>Question #4</span>
+            <span id="Q4">Question #4</span>
             <br><br>
             4. Can you say that your motivation decreased in an online set-up? If yes, how?
             <br><br><br>
@@ -274,7 +269,7 @@
         <!-- Question 5 -->
         <div class="analysis"> 
             
-            <span>Question #5</span>
+            <span id="Q5">Question #5</span>
             <br><br>
             5. How do you think your socioeconomic status affects your mental health during online class?
             <br><br><br>
@@ -283,7 +278,7 @@
                 Visual Representation
             </div>
         </div>
-
+{% endif %}
 </div>
 
 <br><br><br><br>
