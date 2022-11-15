@@ -154,7 +154,7 @@ def distrib_dominant(dominant_topics,lda_model,num_topics):
     dominant_fig, ax1= plt.subplots(1, figsize=(25, 15),dpi=300, sharey=True)
     ax1.bar(x='Dominant_Topic', height='count', data=df_dominant_topic_in_each_doc, width=.5, color='firebrick')
     ax1.set_xticks(range(df_dominant_topic_in_each_doc.Dominant_Topic.unique().__len__()))
-    tick_formatter = FuncFormatter(lambda x, pos: 'Topic ' + str(x+1)+ '\n' + df_top3words.loc[df_top3words.topic_id==x, 'words'].values[0])
+    tick_formatter = FuncFormatter(lambda x, pos: str(dominant_topic_in_each_doc[x]) + '\nTopic ' + str(x+1)+ '\n' + df_top3words.loc[df_top3words.topic_id==x, 'words'].values[0])
     ax1.xaxis.set_major_formatter(tick_formatter)
     ax1.set_title('Number of Documents by Dominant Topic', fontdict=dict(size=30))
     ax1.set_ylabel('Number of Documents',fontdict=dict(size=30))
@@ -168,6 +168,7 @@ def distrib_dominant(dominant_topics,lda_model,num_topics):
 def weightage_topic(topic_percentages,lda_model,num_topics):
     # Distribution of Dominant Topics in Each Document
     topic_weightage_by_doc = pd.DataFrame([dict(t) for t in topic_percentages])
+    weightage_by_doc = round(topic_weightage_by_doc.sum(),2)
     df_topic_weightage_by_doc = topic_weightage_by_doc.sum().to_frame(name='count').reset_index()
     # Top 3 Keywords for each Topic
     topic_top3words = [(i, topic) for i, topics in lda_model.show_topics(num_topics=num_topics,formatted=False) 
@@ -179,7 +180,7 @@ def weightage_topic(topic_percentages,lda_model,num_topics):
     weightage_fig,ax2 = plt.subplots(1, figsize=(20, 10),dpi=300, sharey=True)
     ax2.bar(x='index', height='count', data=df_topic_weightage_by_doc, width=.5, color='steelblue')
     ax2.set_xticks(range(df_topic_weightage_by_doc.index.unique().__len__()))
-    tick_formatter = FuncFormatter(lambda x, pos: 'Topic ' + str(x+1)+ '\n' + df_top3words.loc[df_top3words.topic_id==x, 'words'].values[0])
+    tick_formatter = FuncFormatter(lambda x, pos: str(weightage_by_doc[x]) + '\nTopic ' + str(x+1)+ '\n' + df_top3words.loc[df_top3words.topic_id==x, 'words'].values[0])
     ax2.xaxis.set_major_formatter(tick_formatter)
     ax2.set_title('Number of Documents by Topic Weightage', fontdict=dict(size=30))
     ax2.set_ylabel('Number of Documents', fontdict=dict(size=30))
@@ -251,22 +252,11 @@ def answer_summary(request):
 def start_survey(request):
     context={}
     date2day = date.today() #datetime = date + time
-    #day = date.weekday() 
-    day2day = datetime.today().weekday()
-
     context['date2day'] = date2day
-    context['day2day'] = day2day
-
-    return render(request, 'student/start_survey.html', context)
+    return render(request, 'student/start_survey.html',context)
  
 def survey_question(request):
     context ={}
-    date2day = date.today() #datetime = date + time
-    #day = date.weekday() 
-    day2day = datetime.today().weekday()
-
-    context['date2day'] = date2day
-    context['day2day'] = day2day
     if request.POST:
         form = AnswerForm(request.POST)
         change = request.POST.get('change')
