@@ -249,10 +249,24 @@ def answer_summary(request):
     return render(request, 'student/answer_summary.html')
  
 def start_survey(request):
-        return render(request, 'student/start_survey.html')
+    context={}
+    date2day = date.today() #datetime = date + time
+    #day = date.weekday() 
+    day2day = datetime.today().weekday()
+
+    context['date2day'] = date2day
+    context['day2day'] = day2day
+
+    return render(request, 'student/start_survey.html', context)
  
 def survey_question(request):
     context ={}
+    date2day = date.today() #datetime = date + time
+    #day = date.weekday() 
+    day2day = datetime.today().weekday()
+
+    context['date2day'] = date2day
+    context['day2day'] = day2day
     if request.POST:
         form = AnswerForm(request.POST)
         change = request.POST.get('change')

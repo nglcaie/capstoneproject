@@ -144,7 +144,7 @@
         color: white;
     }
 
-    a{
+    .jump{
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
@@ -152,7 +152,7 @@
         text-decoration: none;
         color:#5CC5A2;
     }
-    a:hover{
+    .jump:hover{
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
@@ -190,12 +190,12 @@
 
         <td>
         <br><br>
-        <a href="#Q1">Jump to Question 1</a> <br>
-        <a href="#Q2">Jump to Question 2</a> <br>
-        <a href="#Q3">Jump to Question 3</a> <br>
-        <a href="#Q4">Jump to Question 4</a> <br>
-        <a href="#Q5">Jump to Question 5</a><br>
-        <a href="{% url 'word_cloud_page' %}">See Word Cloud</a>
+        <a class="jump" href="#Q1">Jump to Question 1</a> <br>
+        <a class="jump" href="#Q2">Jump to Question 2</a> <br>
+        <a class="jump" href="#Q3">Jump to Question 3</a> <br>
+        <a class="jump" href="#Q4">Jump to Question 4</a> <br>
+        <a class="jump" href="#Q5">Jump to Question 5</a><br>
+        <a class="jump" href="{% url 'word_cloud_page' %}">See Word Cloud</a>
         </td>
     </table>
 {% if param == "Empty" %}

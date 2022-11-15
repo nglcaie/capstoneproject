@@ -10,13 +10,23 @@
         background-repeat: no-repeat;
     }
 
+    .date-time {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1em;
+        color: #404040;
+        text-align: right;
+        margin-right: 2em;
+    }
+
     .title {
         font-family: 'Inter';
         font-style: normal;
         font-weight: 700;
         font-size: 2em;
         text-align: center;
-        margin-top: 1em;
+        margin-top: .8em;
 
         color: #404040;
     }
@@ -244,13 +254,13 @@
 
 {% block content%}
 
+<p class="date-time">Today is {{date2day}}</p>
 
-<br><br>
 {% for message in messages %}
 <label class="min-10">{{message}}</label> 
 {% endfor %}
 
-<div class="title">Survey Questionnaire</div> <br>
+<div class="title">Survey Questionnaire</div>
  
 <form method="post" id="personForm" data-cities-url="{% url 'ajax_load_slot' %}">
     {% csrf_token %}
