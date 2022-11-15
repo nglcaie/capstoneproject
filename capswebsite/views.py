@@ -257,6 +257,8 @@ def start_survey(request):
  
 def survey_question(request):
     context ={}
+    date2day = date.today() #datetime = date + time
+    context['date2day'] = date2day
     if request.POST:
         form = AnswerForm(request.POST)
         change = request.POST.get('change')
