@@ -123,13 +123,23 @@
         width: 40%;
         height: 100%;
         padding-left: 8%;
-        padding-top: 4%;
+        padding-top: 3%;
     }
 
     .elements{
-        width: auto;
-        height:auto;
+        width: 100%;
+        align-items: center;
     }
+
+
+    /******* RESPONSIVENESS *******/
+    @media screen and (max-width: 600px) {
+        div.right-half {
+            display: none;
+        }
+    }
+    /******* END RESPONSIVENESS *******/
+
 </style>
 
 <body>
@@ -157,7 +167,7 @@
 
         <!---------------- RIGHT HALF ---------------->
         <div class="right-half">
-            <img src="{% static 'image/elements.png' %}" class="brain">>
+            <img src="{% static 'image/elements.png' %}" class="elements">
         </div>
 
 
