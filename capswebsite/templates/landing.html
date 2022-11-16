@@ -12,43 +12,34 @@
     body {
 
         margin: 0px;
-        position: relative;
-        min-height: 100vh;
-        max-width: 400px;
-        line-height: 150%;
         overflow:hidden;
 
         background: linear-gradient(136.95deg, #FCFBFE 46.14%, #D8F2F2 88.42%);
     }
 
-    .section {
+    /* .section {
         text-align: center;
-    }
+    } */
 
     .container {
-        display: table;
         width: 100%;
         height: 100%;
     }
 
     /* LEFT HALF */
     .left-half {
-        position: absolute;
-        margin-top: -60px;
-        left: 0px;
-        width: 50%;
+        padding-left:8%;
+        padding-top: 6%;
+        float: left;
+        width: 40%;
+        height: 100%;
     }
 
     .text-em {
-        position: absolute;
-        width: 477px;
-        height: 9.375em;
-        left: 109px;
-        top: 226px;
-
+        margin-top: 8%;
+        margin-bottom: 8%;
         font-family: 'Inter', sans-serif;
         font-size: 4em;
-        height: 3.87em;
         color: #404040;
 
         font-style: normal;
@@ -56,40 +47,35 @@
     }
 
     hr.horizontal-gold {
-        position: absolute;
-        width: 86px;
-        left: 109px;
-        top: 213px;
+        margin-left:0;
     }
 
     .logo {
-        position: absolute;
-        width: 7.375em;
-        height: 7.375em;
-        left: 99px;
-        top: 109px;
-
+        margin: 0;
+        height:85px;
     }
 
+    p{
+        display: block;
+        margin-block-start: 0px;
+        margin-block-end: 0px;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+    }
     .lorem-ipsum {
+        height: auto;
+        width: 330px;
+        margin-bottom: 10%;
         font-family: 'Inter';
         font-style: normal;
         font-weight: 500;
         font-size: 16px;
-        line-height: 19px;
-        margin-top: 380px;
-        margin-left: 100px;
 
         color: #404040;
     }
 
     .button {
-        position: absolute;
-        
         height: 37.33px;
-        left: 99px;
-        top: 504px;
-
     }
 
     .btn-lg {
@@ -133,78 +119,45 @@
 
     /****** RIGHT HALF */
     .right-half {
-        position: absolute;
-        right: -110px;
-        width: 50%;
-        margin-top: -550px;
+        float: left;
+        width: 40%;
+        height: 100%;
+        padding-left: 8%;
+        padding-top: 4%;
     }
 
-    .brain {
-        position: absolute;
-        left: 204.38%;
-        right: 9.45%;
-        top: 77.92%;
-        bottom: 17.78%;
-    }
-
-    .blue-pill {
-        position: absolute;
-        width: 172px;
-        height: 174px;
-        left: 770px;
-        top: 124px;
-    }
-
-    .violet-cell {
-        position: absolute;
-        width: 135px;
-        height: 136px;
-        left: 346px;
-        top: 500px;
-
-    }
-
-    .yellow-cell {
-        position: relative;
-        width: 179px;
-        height: 179px;
-        left: 800px;
-        top: 457px;
-
-
+    .elements{
+        width: auto;
+        height:auto;
     }
 </style>
+
 <body>
-    <section class="container">
+    <div class="container">
         <!---------------- LEFT HALF ---------------->
         <div class="left-half">
-            <img src="{% static 'image/landing-plm-logo.png' %}" class="logo"><br>
-            <hr class="horizontal-gold" width="10%" color="#D5A106" size="5em">
-            <p class="text-em"> Mental Health <br><br><br> Survey</p> <br>
-        </div>
-
-        <div class="lorem">
-            <p class="lorem-ipsum"> 
-                An online mental health survey to monitor the mental health of PLM students.
-            </p>
-        </div>
-
-        <div class="button">
-            <a href="{% url 'start_survey' %}">
-                <button class="btn btn-primary btn-lg">BEGIN</button>
-            </a>
-                    
-        </div>
-
+            <img src="{% static 'image/plm-logo-landing.png' %}" class="logo"><br><br>
+            <hr class="horizontal-gold" width="90px" color="#D5A106" size="7em">
+            <p class="text-em"> Mental Health <br> Survey</p>
         
+            <div class="lorem">
+                <p class="lorem-ipsum"> 
+                    An online mental health survey to monitor the mental health of PLM students.
+                </p>
+            </div>
+
+            <div class="button">
+                <a href="{% url 'start_survey' %}">
+                    <button class="btn btn-primary btn-lg">BEGIN</button>
+                </a>
+                        
+            </div>
+        </div>
 
 
         <!---------------- RIGHT HALF ---------------->
         <div class="right-half">
-            <img src="{% static 'image/brain.png' %}" class="brain"><br>
-            <img src="{% static 'image/pill-blue.png' %}" class="blue-pill"><br>
-            <img src="{% static 'image/cell-yellow.png' %}" class="yellow-cell"><br>
-            <img src="{% static 'image/cell-violet.png' %}" class="violet-cell"><br>
+            <img src="{% static 'image/elements.png' %}" class="brain">>
         </div>
 
 
