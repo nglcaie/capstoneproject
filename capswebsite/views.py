@@ -63,6 +63,8 @@ import matplotlib
 matplotlib.use('Agg')
 import io, base64
 from matplotlib.ticker import FuncFormatter
+from collections import Counter
+import matplotlib.colors as mcolors
 
 #word cloud
 #!pip install word_cloud
@@ -208,6 +210,53 @@ def word_cloud_gen(raw_data):
     word = base64.b64encode(flike.getvalue()).decode()
     return word
 
+
+def topic_list(ldamodel,num_topics):
+  topics = ldamodel.show_topics(formatted=False, num_words=10,num_topics=num_topics, log=False)
+  topic_summaries = {}
+  for topic in topics:
+      topic_index = topic[0]
+      topic_word_weights = topic[1]
+      topic_summaries[topic_index] = ' + '.join(
+          f'{weight:.3f} * {word}' for word, weight in topic_word_weights[:10])
+  topic = []
+  for topic_index, topic_summary in topic_summaries.items():
+    yes = "Topic " + str(topic_index +1) + ":   " + str(topic_summary)
+    topic.append(yes)
+  return topic
+
+def word_count_graph(ldamodel,num_topics,improve_stop_words,y,x):
+    topics = ldamodel.show_topics(num_topics=num_topics,formatted=False)
+    data_flat = [w for w_list in improve_stop_words for w in w_list]
+    counter = Counter(data_flat)
+
+    out = []
+    for i, topic in topics:
+        for word, weight in topic:
+            out.append([word, i , weight, counter[word]])
+
+    df = pd.DataFrame(out, columns=['word', 'topic_id', 'importance', 'word_count'])        
+
+    # Plot Word Count and Weights of Topic Keywords
+    word_count_fig, axes = plt.subplots(y, x, figsize=(25,20), sharey=True, dpi=300)
+    cols = [color for name, color in mcolors.XKCD_COLORS.items()]
+    for i, ax in enumerate(axes.flatten()):
+        ax.bar(x='word', height="word_count", data=df.loc[df.topic_id==i, :], color=cols[i], width=0.5, alpha=0.7, label='Word Count')
+        ax_twin = ax.twinx()
+        ax_twin.bar(x='word', height="importance", data=df.loc[df.topic_id==i, :], color=cols[i], width=0.2, label='Weights')
+        ax.set_ylabel('Word Count', color=cols[i])
+        ax_twin.set_ylim(0, 0.090); ax.set_ylim(0, 100)
+        ax.set_title('Topic: ' + str(i+1), color=cols[i], fontsize=10)
+        ax.tick_params(axis='y', left=False)
+        ax.set_xticklabels(df.loc[df.topic_id==i, 'word'], rotation=30, horizontalalignment= 'right')
+        ax.legend(loc='upper left'); ax_twin.legend(loc='upper right')
+
+    word_count_fig.tight_layout(w_pad=2)    
+    word_count_fig.suptitle('Word Count and Importance of Topic Keywords', fontsize=22, y=1.05) 
+    flike = io.BytesIO()
+    word_count_fig.savefig(flike)
+    word_count = base64.b64encode(flike.getvalue()).decode()
+    return word_count 
 #DJANGO WEBSITE
 
 def index(request):
@@ -647,6 +696,8 @@ def evaluation(request):
         dominant_topics1, topic_percentages1 = topics_per_document(model=lda_model1, corpus=corpus_test1, end=-1)
         dom_plot1 = distrib_dominant(dominant_topics1,lda_model1,20)
         weightage_plot1 = weightage_topic(topic_percentages1,lda_model1,20)
+        word_list1 = topic_list(lda_model1,20)
+        count_graph1 = word_count_graph(lda_model1,20,improve_stop_words_test1,4,5)
 
         #question2
         improve_stop_words_test2,texts_test2,corpus_test2,lda_model2= cleaning2(raw_data_test2)
@@ -654,6 +705,8 @@ def evaluation(request):
         dominant_topics2, topic_percentages2 = topics_per_document(model=lda_model2, corpus=corpus_test2, end=-1)
         dom_plot2 = distrib_dominant(dominant_topics2,lda_model2,20)
         weightage_plot2 = weightage_topic(topic_percentages2,lda_model2,20)
+        word_list2 = topic_list(lda_model2,20)
+        count_graph2 = word_count_graph(lda_model2,20,improve_stop_words_test2,4,5)
 
         #question3
         improve_stop_words_test3,texts_test3,corpus_test3,lda_model3= cleaning3(raw_data_test3)
@@ -661,6 +714,8 @@ def evaluation(request):
         dominant_topics3, topic_percentages3 = topics_per_document(model=lda_model3, corpus=corpus_test3, end=-1)
         dom_plot3 = distrib_dominant(dominant_topics3,lda_model3,25)
         weightage_plot3 = weightage_topic(topic_percentages3,lda_model3,25)
+        word_list3 = topic_list(lda_model3,25)
+        count_graph3 = word_count_graph(lda_model3,25,improve_stop_words_test3,5,5)
 
         #question4
         improve_stop_words_test4,texts_test4,corpus_test4,lda_model4= cleaning4(raw_data_test4)
@@ -668,6 +723,8 @@ def evaluation(request):
         dominant_topics4, topic_percentages4 = topics_per_document(model=lda_model4, corpus=corpus_test4, end=-1)
         dom_plot4 = distrib_dominant(dominant_topics4,lda_model4,30)
         weightage_plot4 = weightage_topic(topic_percentages4,lda_model4,30)
+        word_list4 = topic_list(lda_model4,30)
+        count_graph4 = word_count_graph(lda_model4,30,improve_stop_words_test4,5,6)
 
         #question5
         improve_stop_words_test5,texts_test5,corpus_test5,lda_model5= cleaning5(raw_data_test5)
@@ -675,21 +732,36 @@ def evaluation(request):
         dominant_topics5, topic_percentages5 = topics_per_document(model=lda_model5, corpus=corpus_test5, end=-1)
         dom_plot5 = distrib_dominant(dominant_topics5,lda_model5,20)
         weightage_plot5 = weightage_topic(topic_percentages5,lda_model5,20)
+        word_list5 = topic_list(lda_model5,20)
+        count_graph5 = word_count_graph(lda_model5,20,improve_stop_words_test5,4,5)
 
 
-
+        #q1
         context['dominant1'] = dom_plot1
         context['weightage1'] = weightage_plot1
+        context['word_list1'] = word_list1
+        context['count_graph1'] = count_graph1
+        #q2
         context['dominant2'] = dom_plot2
         context['weightage2'] = weightage_plot2
+        context['word_list2'] = word_list2
+        context['count_graph2'] = count_graph2
+        #q3
         context['dominant3'] = dom_plot3
         context['weightage3'] = weightage_plot3
+        context['word_list3'] = word_list3
+        context['count_graph3'] = count_graph3
+        #4
         context['dominant4'] = dom_plot4
         context['weightage4'] = weightage_plot4
+        context['word_list4'] = word_list4
+        context['count_graph4'] = count_graph4
+        #5
         context['dominant5'] = dom_plot5
         context['weightage5'] = weightage_plot5
-
-
+        context['word_list5'] = word_list5
+        context['count_graph5'] = count_graph5
+        
         context['param'] = param
         #pprint(lda.print_topics())
         #x1= lda_model1.print_topics()
