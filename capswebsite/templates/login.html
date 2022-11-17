@@ -76,7 +76,7 @@
         color: #8F8F8F;
     }
 
-    input[type=tel] {
+    input[type=text] {
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
@@ -189,7 +189,7 @@
         <form method="POST">
             {% csrf_token %}
 
-            <input type="tel" id="lname" name="username" placeholder="Email (Ex. jdelacruz2019@plm.edu.ph)"><br>
+            <input type="text" id="lname" name="username" placeholder="Email (Ex. jdelacruz2019@plm.edu.ph)"><br>
             <input type="password" id="college" name="password" placeholder="Password">
         
             <p class="error">
