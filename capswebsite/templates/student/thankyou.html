@@ -74,7 +74,7 @@
         background-color: #92C4C6;
     }
 
-    .saly{
+    .peace-saly{
         position: absolute;
         width: 474px;
         height: 474px;
@@ -82,6 +82,15 @@
         top: 235px;
     }
 
+    @media screen and (max-width: 600px) {
+        .peace-saly{
+            display: none;
+        }
+        .successful{
+            margin-top: 40%;
+            font-size: 27px;
+        }
+    }
 
 </style>
 
@@ -107,7 +116,7 @@
     </div>
 
     <div class="saly">
-        <img src="{% static 'image/peace-saly.png' %}" class="brain"><br>
+        <img src="{% static 'image/peace-saly.png' %}" class="peace-saly"><br>
     </div>
 
 
