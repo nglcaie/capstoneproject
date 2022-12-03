@@ -39,6 +39,7 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet 
 #!pip install contractions
 import contractions
+from textblob import Word
 
 #Gensim
 #!pip install gensim
@@ -257,6 +258,15 @@ def word_count_graph(ldamodel,num_topics,improve_stop_words,y,x):
     word_count_fig.savefig(flike)
     word_count = base64.b64encode(flike.getvalue()).decode()
     return word_count 
+
+
+def correct_word_spelling(inputs):
+    text_out = []
+    for word in inputs.split():
+        word = Word(word)
+        text_out.append(word.correct())  
+        expanded_text = ' '.join(text_out)
+    return expanded_text
 #DJANGO WEBSITE
 
 def index(request):
@@ -310,19 +320,25 @@ def survey_question(request):
     context['date2day'] = date2day
     if request.POST:
         form = AnswerForm(request.POST)
-        change = request.POST.get('change')
-        change2 = request.POST.get('change2')
-        change3 = request.POST.get('change3')
-        change4 = request.POST.get('change4')
-        change5 = request.POST.get('change5')
-        param = 10
         if form.is_valid():
-            if (int(change) < param) or (int(change2) < param) or (int(change3) < param) or (int(change4) < param) or (int(change5) < param):
-                messages.error(request, "The survey will only accept a minimum of 10 words per answer")
-                context['register'] = form
-            else:
-                form.save()
-                return redirect('thankyou')
+            x = form.save()
+            q1 = form.cleaned_data.get('question1')
+            q2 = form.cleaned_data.get('question2')
+            q3 = form.cleaned_data.get('question3')
+            q4 = form.cleaned_data.get('question4')
+            q5 = form.cleaned_data.get('question5')
+            cq1 = correct_word_spelling(q1)
+            cq2 = correct_word_spelling(q2)
+            cq3 = correct_word_spelling(q3)
+            cq4 = correct_word_spelling(q4)
+            cq5 = correct_word_spelling(q5)
+            x.question1 = cq1
+            x.question2 = cq2
+            x.question3 = cq3
+            x.question4 = cq4
+            x.question5 = cq5
+            x.save()
+            return redirect('thankyou')
         else:
             context['register'] = form
     else:
