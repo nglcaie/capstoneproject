@@ -146,6 +146,10 @@ def distrib_dominant(dominant_topics,lda_model,num_topics):
     df = pd.DataFrame(dominant_topics, columns=['Document_Id', 'Dominant_Topic'])
     dominant_topic_in_each_doc = df.groupby('Dominant_Topic').size()
     df_dominant_topic_in_each_doc = dominant_topic_in_each_doc.to_frame(name='count').reset_index()
+    a=[]
+    for i in range(0, num_topics):
+        a.append(i)
+    adf = pd.DataFrame(a, columns=['NumofTopics'])
     # Top 3 Keywords for each Topic
     topic_top3words = [(i, topic) for i, topics in lda_model.show_topics(num_topics=num_topics,formatted=False) 
                                     for j, (topic, wt) in enumerate(topics) if j < 10]
@@ -155,12 +159,12 @@ def distrib_dominant(dominant_topics,lda_model,num_topics):
     # Topic Distribution by Dominant Topics
     dominant_fig, ax1= plt.subplots(1, figsize=(25, 15),dpi=300, sharey=True)
     ax1.bar(x='Dominant_Topic', height='count', data=df_dominant_topic_in_each_doc, width=.5, color='firebrick')
-    ax1.set_xticks(range(df_dominant_topic_in_each_doc.Dominant_Topic.unique().__len__()))
-    tick_formatter = FuncFormatter(lambda x, pos: '\nTopic ' + str(x+1)+ '\n' + df_top3words.loc[df_top3words.topic_id==x, 'words'].values[0])
+    ax1.set_xticks(range(adf.NumofTopics.unique().__len__()))
+    tick_formatter = FuncFormatter(lambda x, pos: 'Topic ' + str(x)+ '\n' + df_top3words.loc[df_top3words.topic_id==x, 'words'].values[0])
     ax1.xaxis.set_major_formatter(tick_formatter)
-    ax1.set_title('Number of Documents by Dominant Topic', fontdict=dict(size=30))
-    ax1.set_ylabel('Number of Documents',fontdict=dict(size=30))
-    ax1.set_ylim(0, 700)
+    ax1.set_title('Number of Documents by Dominant Topic', fontdict=dict(size=10))
+    ax1.set_ylabel('Number of Documents')
+    ax1.set_ylim(0, 1000)
     flike = io.BytesIO()
     dominant_fig.tight_layout()
     dominant_fig.savefig(flike)
@@ -212,18 +216,18 @@ def word_cloud_gen(raw_data):
 
 
 def topic_list(ldamodel,num_topics):
-  topics = ldamodel.show_topics(formatted=False, num_words=10,num_topics=num_topics, log=False)
-  topic_summaries = {}
-  for topic in topics:
-      topic_index = topic[0]
-      topic_word_weights = topic[1]
-      topic_summaries[topic_index] = ' + '.join(
-          f'{weight:.3f} * {word}' for word, weight in topic_word_weights[:10])
-  topic = []
-  for topic_index, topic_summary in topic_summaries.items():
-    yes = "Topic " + str(topic_index +1) + ":   " + str(topic_summary)
-    topic.append(yes)
-  return topic
+    topics = ldamodel.show_topics(formatted=False, num_words=10,num_topics=num_topics, log=False)
+    topic_summaries = {}
+    for topic in topics:
+        topic_index = topic[0]
+        topic_word_weights = topic[1]
+        topic_summaries[topic_index] = ' + '.join(
+            f'{weight:.3f} * {word}' for word, weight in topic_word_weights[:10])
+    topic = []
+    for topic_index, topic_summary in topic_summaries.items():
+        yes = "Topic " + str(topic_index +1) + ":   " + str(topic_summary)
+        topic.append(yes)
+    return topic
 
 def word_count_graph(ldamodel,num_topics,improve_stop_words,y,x):
     topics = ldamodel.show_topics(num_topics=num_topics,formatted=False)
